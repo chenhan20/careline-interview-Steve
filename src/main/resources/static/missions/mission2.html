@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務2 - 運算 API</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+
+                $("#btn1").click(function() {
+                    
+                    var data = {
+                        numList : []
+                    };
+                    
+                    var numOfElements = randomNum(6, 20);
+                    for (var i = 0 ; i < numOfElements ; i++) {
+                        data.numList.push( randomNum(randomNum(1, 100), randomNum(200, 1000)) );
+                    }
+                    
+                    ajax({
+                        url : "/mission2/compute",
+                        method : "POST", 
+                        data : JSON.stringify(data), 
+                        contentType : "application/json", 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務2 - 運算 API
+                </div>
+                <div class="card-body">
+                    <p class="card-text">點擊下面按鈕, 會送出 HTTP Request, .</p>
+                    <p class="card-text">請完成 com.careline.interview.test.mission2.Mission2Controller.java 來接收 HTTP Request</p>
+                    <p class="card-text">並回傳運算結果 (運算請算到小數點第二位四捨五入)</p>
+                    <button id="btn1" type="button" class="btn btn-primary">送出</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Server 回傳
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">回傳格式</h5>
+                    <pre>
+                        {
+                            "sum" : 0.00, // 數字總和
+                            "max" : 0.00, // 最大數字
+                            "min" : 0.00, // 最小數字
+                            "avg" : 0.00, // 數字平均
+                            "sorted_list" : [0, 0, ...] // 由小到大排序的數字陣列
+                        }
+                    </pre>
+                    <h5 class="card-title">Server 回傳</h5>
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

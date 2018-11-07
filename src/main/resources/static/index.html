@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>測試</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                
+                init();
+                
+                function init() {
+                    initMissions();
+                }
+                function initMissions() {
+                    var missions = [];
+                    
+                    missions.push({
+                        "name" : "Hello API", 
+                        "desc" : "請完成 Hello API", 
+                        "pageUrl" : "/missions/mission1.html"
+                    });
+                    missions.push({
+                        "name" : "運算 API", 
+                        "desc" : "請完成 運算 API", 
+                        "pageUrl" : "/missions/mission2.html"
+                    });
+                    missions.push({
+                        "name" : "會員註冊", 
+                        "desc" : "請完成 會員註冊", 
+                        "pageUrl" : "/missions/mission3.html"
+                    });
+                    missions.push({
+                        "name" : "會員清單", 
+                        "desc" : "請完成 會員清單", 
+                        "pageUrl" : "/missions/mission4.html"
+                    });
+                    missions.push({
+                        "name" : "登入/登出", 
+                        "desc" : "請完成 登入/登出", 
+                        "pageUrl" : "/missions/mission5.html"
+                    });
+                    missions.push({
+                        "name" : "修改會員資料", 
+                        "desc" : "請完成 修改會員資料", 
+                        "pageUrl" : "/missions/mission6.html"
+                    });
+                    missions.push({
+                        "name" : "上傳會員照片", 
+                        "desc" : "請完成 上傳會員照片", 
+                        "pageUrl" : "/missions/mission7.html"
+                    });
+                    missions.push({
+                        "name" : "儲存會員喜好", 
+                        "desc" : "請完成 儲存會員喜好", 
+                        "pageUrl" : "/missions/mission8.html"
+                    });
+                    missions.push({
+                        "name" : "權限控管 (可跳過不做)", 
+                        "desc" : "請完成 權限控管", 
+                        "pageUrl" : "/missions/mission9.html"
+                    });
+                    missions.push({
+                        "name" : "計數", 
+                        "desc" : "請完成 計數", 
+                        "pageUrl" : "/missions/mission10.html"
+                    });
+                    missions.push({
+                        "name" : "會員管理介面 (★重點題目)", 
+                        "desc" : "請完成 會員管理介面", 
+                        "pageUrl" : "/missions/mission11.html"
+                    });
+                    
+                    var container = $("#accordion");
+                    $.each(missions, function(i, mission) {
+                        var headingId = "missionHeading"+i;
+                        var collapseId = "missionCollapse"+i;
+                        var version = ""+new Date().getTime();
+                        var tpl = $(
+                            "<div class='card'>"
+                            + "  <div class='card-header' id='"+headingId+"'>"
+                            + "    <h5 class='mb-0'>"
+                            + "      <button class='btn btn-link' data-toggle='collapse' data-target='#"+collapseId+"' aria-expanded='true' aria-controls='"+collapseId+"'>"
+                            + "        任務 #"+(i+1)+" - "+mission.name
+                            + "      </button>"
+                            + "    </h5>"
+                            + "  </div>"
+                            + "  <div id='"+collapseId+"' class='collapse' aria-labelledby='"+headingId+"' data-parent='#accordion'>"
+                            + "    <div class='card-body'>"
+                            + "      <h5 class='card-title'>"+mission.name+"</h5>"
+                            + "      <p class='card-text'>"+mission.desc+"</p>"
+                            + "      <a href='"+mission.pageUrl+"?v="+version+"' target='_blank' class='btn btn-primary'>前往 ["+mission.name+"] 頁面</a>"
+                            + "    </div>"
+                            + "  </div>"
+                            + "</div>"
+                        );
+
+                        $(container).append(tpl);
+                    });
+                }
+            });
+        </script>
+        
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    測試
+                </div>
+                <div class="card-body">
+                    <p class="card-text">請完成下列任務.</p>
+
+                    <div id="accordion">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

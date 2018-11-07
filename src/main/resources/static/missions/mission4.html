@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務4 - 會員清單</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                
+                renderTable([]);
+
+                $("#btn1").click(function() {
+                    
+                    ajax({
+                        url : "/mission4/getAllMembers",
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                            
+                            renderTable(data.memberList);
+                        }
+                    });
+                });
+                
+                function renderTable(memberList) {
+                    var tbody = $("#dataTable tbody").empty();
+                    
+                    if (memberList.length === 0) {
+                        tbody.append("<tr><td colspan='3'>N/A</td></tr>");
+                    } else {
+                        $.each(memberList, function (i, member) {
+                            var tr = $(
+                                "<tr>"
+                                + "  <td>"+member.email+"</td>"
+                                + "  <td>"+member.name+"</td>"
+                                + "</tr>"
+                            );
+                            
+                            $(tbody).append(tr);
+                        });
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務4 - 會員清單
+                </div>
+                <div class="card-body">
+                    <p class="card-text">點擊下面按鈕, 會送出 HTTP Request, .</p>
+                    <p class="card-text">請完成 com.careline.interview.test.mission4.Mission4Controller.java 來接收 HTTP Request</p>
+                    <p class="card-text">並回傳所有會員資料</p>
+
+                    <table id="dataTable" class="">
+                        <thead>
+                            <tr>
+                                <th>E-Mail</th>
+                                <th>稱呼名稱</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-right" colspan="2">
+                                    <button id="btn1" type="button" class="btn btn-primary">送出</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Server 回傳
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">回傳格式</h5>
+                    <pre>
+                        {
+                            "memberList" : [{
+                                "memberId" : "", // 會員ID
+                                "email" : "",    // Email
+                                "name" : ""      // 會員名稱
+                            }] // 會員清單
+                        }
+                    </pre>
+                    <h5 class="card-title">Server 回傳</h5>
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

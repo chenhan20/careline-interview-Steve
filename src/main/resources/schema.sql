@@ -1,0 +1,9 @@
+set mode MySQL;
+
+DROP TABLE IF EXISTS tmp;
+CREATE TABLE tmp (
+    key VARCHAR(50) NOT NULL, 
+    value VARCHAR(200) DEFAULT NULL, 
+    desc VARCHAR(200) DEFAULT NULL, 
+    PRIMARY KEY (key)
+);

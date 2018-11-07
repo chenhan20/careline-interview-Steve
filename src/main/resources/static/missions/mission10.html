@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務10 - 計數</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+
+                var respMap = {};
+
+                function call() {
+                    ajax({
+                        url : "/mission10/call", 
+                        method : "POST", 
+                        data : {
+                        }, 
+                        success : function(data) {
+                            appendResp(data);
+                        }
+                    });
+                }
+                function appendResp(value) {
+                    var displayClass = "badge badge-danger";
+                    if (typeof respMap[value] === "undefined") {
+                        displayClass = "badge badge-success";
+                        respMap[value] = value;
+                    }
+                    $("#response").append("<span class='"+displayClass+"'>"+value+"</span>");
+                }
+
+                $("#btn1").click(function() {
+                    var num = randomNum(5, 10);
+                    for (var i = 0 ; i < num ; i++) {
+                        call();
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務10 - 計數
+                </div>
+                <div class="card-body">
+                    <p class="card-text">"計數"用來累計API被呼叫次數, 下面按鈕會發出數次API Call</p>
+                    <p class="card-text">請完成 com.careline.interview.test.mission10.Mission10Controller.java 來完成計數邏輯</p>
+                    <p class="card-text">API 回傳格式, 請直接回傳被呼叫次數</p>
+                    <p class="card-text">ex: 被呼叫5次時</p>
+                    <pre>5</pre>
+                    <div class="card">
+                        <div class="card-body">
+                            <button id="btn1" class="btn btn-primary" type="button">Call</button>
+                            <div id="response">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務8 - 儲存會員喜好</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <style>
+            #interestContainer .btnInterest .iconChecked {
+                display: none;
+            }
+            #interestContainer .btnInterest.checked .iconChecked {
+                display: inline-block;
+            }
+            #interestContainer .btnInterest.checked .iconUnchecked {
+                display: none;
+            }
+            pre {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+        </style>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                
+                var INTERESTS = {
+                    "Movie" : "電影", 
+                    "Food" : "美食", 
+                    "Sport" : "運動", 
+                    "Travel" : "旅遊", 
+                    "Music" : "音樂"
+                };
+                
+                $("#interestContainer").on("click", ".btnInterest", function() {
+                    $(this).toggleClass("checked");
+                });
+                $("#btn1").click(function() {
+
+                    var interestList = [];
+                    $("#interestContainer .btnInterest").each(function(i, btn) {
+                        interestList.push({
+                            "key" : $(btn).attr("data-key"), 
+                            "isChecked" : $(btn).hasClass("checked")
+                        });
+                    });
+
+                    ajax({
+                        url : "/mission8/saveInterest", 
+                        method : "POST", 
+                        data : {
+                            json : JSON.stringify(interestList)
+                        }, 
+                        success : function(data) {
+                            $("#response2").text(prettyJSON(data));
+                            if (data.success === true) {
+                                reload();
+                            }
+                        }
+                    });
+                });
+                
+                function initInterestTable() {
+                    var tbody = $("#interestTable tbody").empty();
+                    var cnt = 0;
+                    var tr = $("<tr></tr>");
+                    for (key in INTERESTS) {
+                        $(tr).append("<td>"+INTERESTS[key]+"("+key+")</td>");
+                        
+                        cnt++;
+                    }
+                    $(tbody).append(tr);
+                    
+                    $("#interestTable thead th").attr("colspan", (cnt));
+                }
+                
+                function reload() {
+                    ajax({
+                        url : "/mission8/getInterest", 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                            
+                            if (data.success === true) {
+                                var con = $("#interestContainer").empty();
+                                $.each(data.interestList, function(i, interest) {
+                                    var ele = $(
+                                        "<button type='button' data-key='"+interest.key+"' class='btnInterest btn btn-success' style='margin-right:10px;'>"
+                                        + INTERESTS[interest.key]
+                                        + "  <i class='iconChecked fa fa-check-square'></i>"
+                                        + "  <i class='iconUnchecked fa fa-square'></i>"
+                                        + "</button>"
+                                    );
+                                    $(ele).toggleClass("checked", interest.isChecked);
+                                    $(con).append(ele);
+                                });
+                            } else {
+                                $("#interestContainer").empty().text("伺服器回傳錯誤 : "+data.errorMsg);
+                            }
+                        }
+                    });
+                }
+
+                initInterestTable();
+                reload();
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務8 - 儲存會員喜好
+                </div>
+                <div class="card-body">
+                    <p class="card-text">請完成 com.careline.interview.test.mission8.Mission8Controller.java 來儲存會員喜好</p>
+                    <p class="card-text">(請依據需求, 在 src/main/resources/schema.sql 內建立/修改 table)</p>
+                    <table id="interestTable" class="table table-bordered ">
+                        <thead>
+                            <tr>
+                                <th>資料定義</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="card">
+                        <div class="card-header">
+                            儲存會員喜好
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">畫面初始會先讀取喜好資料 (若無資料, 則 isChecked = false)</p>
+                            <p class="card-text">點擊「儲存會員喜好」之後, 請將喜好資料儲存起來</p>
+                            <form id="dataForm">
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <th>會員喜好</th>
+                                            <td id="interestContainer"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right" colspan="2">
+                                                <button id="btn1" type="button" class="btn btn-primary">儲存會員喜好</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Server 回傳
+                        </div>
+                        <div class="card-body">
+                            <div class="card">
+                                <div class="card-header">
+                                    getInterest
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式</h5>
+                                    <pre>
+                                {
+                                    "success" : true,   // 是否成功
+                                    "errorMsg" : "",    // 錯誤訊息
+                                    "interestList" : [  // 喜好 List
+                                        {
+                                            "key" : "Movie", 
+                                            "isChecked" : true
+                                        }, 
+                                        {
+                                            "key" : "Food", 
+                                            "isChecked" : false
+                                        }, ...
+                                    ]
+                                }
+                                    </pre>
+                                    <h5 class="card-title">Server 回傳</h5>
+                                    <pre id="response"></pre>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    saveInterest
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式</h5>
+                                    <pre>
+                                {
+                                    "success" : true,   // 是否成功
+                                    "errorMsg" : ""     // 錯誤訊息
+                                }
+                                    </pre>
+                                    <h5 class="card-title">Server 回傳</h5>
+                                    <pre id="response2"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

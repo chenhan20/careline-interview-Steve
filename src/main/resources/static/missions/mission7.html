@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務7 - 上傳會員照片</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                
+                $("#btn1").click(function() {
+                    
+                    ajax({
+                        url : "/mission7/uploadPicture", 
+                        method : "POST", 
+                        data: new FormData($('#dataForm')[0]),
+                        processData: false,
+                        contentType: false, 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+
+                $("#btn2").click(function() {
+                    
+                    ajax({
+                        url : "/mission7/getPicture",
+                        success : function(data) {
+                            $("#response2").text(prettyJSON(data));
+                            if (data.success === true) {
+                                if ($.trim(data.imageUrl) === "") {
+                                    $("#data2DisplayImage").empty().text("尚未上傳照片");
+                                } else {
+                                    $("#data2DisplayImage").empty().append("<img src='"+data.imageUrl+"' style='max-width:200px; max-height:200px;' />");
+                                }
+                            } else {
+                                $("#data2DisplayImage").empty().text("伺服器回傳錯誤 : " + data.errorMsg);
+                            }
+                        }
+                    });
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務7 - 上傳會員照片
+                </div>
+                <div class="card-body">
+                    <p class="card-text">請完成 com.careline.interview.test.mission7.Mission7Controller.java 來處理上傳照片</p>
+                    <p class="card-text">(請依據需求, 在 src/main/resources/schema.sql 內建立/修改 table)</p>
+                    <div class="card">
+                        <div class="card-header">
+                            任務7-A : 上傳會員照片
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">點擊「上傳照片」後, 請將圖片檔案儲存起來, 並跟會員資料關聯</p>
+                            <form id="dataForm">
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <th>選擇照片</th>
+                                            <td><input type="file" name="picture" /></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right" colspan="2">
+                                                <button id="btn1" type="button" class="btn btn-primary">上傳照片</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                            <div class="card">
+                                <div class="card-header">
+                                    Server 回傳
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式</h5>
+                                    <pre>
+                        {
+                            "success" : true,   // 是否成功
+                            "errorMsg" : ""     // 錯誤訊息
+                        }
+                                    </pre>
+                                    <h5 class="card-title">Server 回傳</h5>
+                                    <pre id="response"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 10px;">
+                        <div class="card-header">
+                            任務7-B : 讀取會員照片
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">點擊「讀取照片」後, 請回傳已上傳圖片URL, 若尚未上傳圖片, 則回傳空的URL</p>
+                            <form id="dataForm2">
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <th>照片</th>
+                                            <td id="data2DisplayImage">N/A</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right" colspan="2">
+                                                <button id="btn2" type="button" class="btn btn-primary">讀取照片</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                            <div class="card">
+                                <div class="card-header">
+                                    Server 回傳
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式</h5>
+                                    <pre>
+                                        {
+                                            "success" : true,   // 是否成功
+                                            "imageUrl" : "",    // 照片的URL
+                                            "errorMsg" : ""     // 錯誤訊息
+                                        }
+                                    </pre>
+                                    <h5 class="card-title">Server 回傳</h5>
+                                    <pre id="response2"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                            
+        </div>
+    </body>
+</html>

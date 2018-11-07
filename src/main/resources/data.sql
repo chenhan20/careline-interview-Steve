@@ -1,0 +1,1 @@
+INSERT INTO `tmp` (`key`, `value`, `desc`) VALUES ('System.Start', NOW(), 'System start time.');

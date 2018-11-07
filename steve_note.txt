@@ -1,0 +1,3 @@
+起專案步驟
+Melvin build  --> Goals欄輸入spring-boot:run  記得選JDK版本否則error
+包JAR檔則 Goals輸入 clean package    --> 產出JAR檔案 (target內)

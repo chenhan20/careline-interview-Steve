@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務6 - 修改會員資料</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                
+                $("#btn1").click(function() {
+                    
+                    ajax({
+                        url : "/mission6/updateProfile",
+                        method : "POST", 
+                        data : new FormData($("#dataForm")[0]), 
+                        processData: false,
+                        contentType: false, 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+
+                $("#btn2").click(function() {
+                    
+                    ajax({
+                        url : "/mission6/updatePassword",
+                        method : "POST", 
+                        data : new FormData($("#dataForm2")[0]), 
+                        processData: false,
+                        contentType: false, 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務6 - 修改會員資料
+                </div>
+                <div class="card-body">
+                    <p class="card-text">請完成 com.careline.interview.test.mission6.Mission6Controller.java 來處理修改會員資料</p>
+                    <p class="card-text">請另外再建立 table 紀錄每次會員修改資料的異動內容 (只需2欄位 "修改時間" "修改內容描述")</p>
+                    <p class="card-text">(請依據需求, 在 src/main/resources/schema.sql 內建立新的 table)</p>
+                    <div class="card">
+                        <div class="card-header">
+                            修改會員資料
+                        </div>
+                        <div class="card-body">
+                            <form id="dataForm">
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <th>E-Mail</th>
+                                            <td><input type="text" name="email" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>會員名稱</th>
+                                            <td><input type="text" name="name" /></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right" colspan="2">
+                                                <button id="btn1" type="button" class="btn btn-primary">修改會員資料</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            修改密碼
+                        </div>
+                        <div class="card-body">
+                            <form id="dataForm2">
+                                <table class="">
+                                    <tbody>
+                                        <tr>
+                                            <th>舊密碼</th>
+                                            <td><input type="password" name="oldPassword" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>新密碼</th>
+                                            <td><input type="password" name="newPassword" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>新密碼 (再次確認)</th>
+                                            <td><input type="password" name="newPasswordConfirm" /></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-right" colspan="2">
+                                                <button id="btn2" type="button" class="btn btn-primary">修改密碼</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    Server 回傳
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">回傳格式</h5>
+                    <pre>
+                        {
+                            "success" : true,   // 是否成功
+                            "errorMsg" : ""     // 錯誤訊息
+                        }
+                    </pre>
+                    <h5 class="card-title">Server 回傳</h5>
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

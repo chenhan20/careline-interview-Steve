@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務3 - 會員註冊</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+
+                $("#btn1").click(function() {
+
+                    ajax({
+                        url : "/mission3/register",
+                        method : "POST", 
+                        data : new FormData($("#dataForm")[0]), 
+                        processData: false,
+                        contentType: false, 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務3 - 會員註冊
+                </div>
+                <div class="card-body">
+                    <p class="card-text">點擊下面按鈕, 會送出 HTTP Request, .</p>
+                    <p class="card-text">請完成 com.careline.interview.test.mission3.Mission3Controller.java 來接收 HTTP Request</p>
+                    <p class="card-text">將傳入的 Request 資料寫入DB, 並回傳結果</p>
+                    <p class="card-text">(請依據下面需求, 在 src/main/resources/schema.sql 內, 新增需要的 table schema)</p>
+                    <ul>
+                        <li>會員 Table 的欄位必需包含 "會員ID", "Email", "密碼", "會員稱呼"</li>
+                        <li>輸入的 "Email", "密碼", "會員稱呼" 不可為空白</li>
+                        <li>"會員ID" 必需為唯一值, 在建立會員時由 Server 產生 (請自行尋找適當的方式, 產生任意長度字串當ID)</li>
+                        <li>Email 必需為唯一值</li>
+                    </ul>
+
+                    <form id="dataForm">
+                        <table class="">
+                            <tbody>
+                                <tr>
+                                    <th>E-Mail (必需唯一, 用來登入)</th>
+                                    <td><input type="text" name="email" /></td>
+                                </tr>
+                                <tr>
+                                    <th>密碼</th>
+                                    <td><input type="password" name="password" /></td>
+                                </tr>
+                                <tr>
+                                    <th>會員稱呼</th>
+                                    <td><input type="text" name="name" /></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-right" colspan="2">
+                                        <button id="btn1" type="button" class="btn btn-primary">送出</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Server 回傳
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">回傳格式 (註冊成功)</h5>
+                    <pre>
+                        {
+                            "memberId" : "" // 會員ID
+                        }
+                    </pre>
+                    <h5 class="card-title">回傳格式 (註冊失敗)</h5>
+                    <pre>
+                        {
+                            "msg" : "" // 失敗原因
+                        }
+                    </pre>
+                    <h5 class="card-title">Server 回傳</h5>
+                    <pre id="response"></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

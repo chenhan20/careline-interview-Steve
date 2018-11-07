@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>任務9 - 權限控管</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/common.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                
+                $("#apiBtnContainer").on("click", ".btnApi", function() {
+                    ajax({
+                        url : "/mission9/"+$(this).attr("data-api-path"), 
+                        method : "POST", 
+                        data : {
+                            
+                        }, 
+                        success : function(data) {
+                            $("#response").text(prettyJSON(data));
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    任務9 - 權限控管
+                </div>
+                <div class="card-body">
+                    <p class="card-text">請設計 DB, 用以控制每個會員存取每支API的權限</p>
+                    <p class="card-text">要能夠即時修改 DB 資料, 來 允許/限制 會員的 API 存取權限</p>
+                    <p class="card-text">(請依據需求, 在 src/main/resources/schema.sql 內建立/修改 table)</p>
+                    <div class="card">
+                        <div class="card-header">
+                            任務9-A : 控管 API 權限
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">請修改 DB 的資料, 用以控制 API A/B/C 的權限</p>
+                            <div id="apiBtnContainer">
+                                <button data-api-path="ApiA" class="btnApi btn btn-primary" type="button">API A</button>
+                                <button data-api-path="ApiB" class="btnApi btn btn-primary" type="button">API B</button>
+                                <button data-api-path="ApiC" class="btnApi btn btn-primary" type="button">API C</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    Server 回傳
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式 (有存取權限)</h5>
+                                    <pre>
+                                            {
+                                                "status" : "OK"
+                                            }
+                                    </pre>
+                                    <h5 class="card-title">回傳格式 (無權限)</h5>
+                                    <pre>
+                                            {
+                                                "deny" : true
+                                            }
+                                    </pre>
+                                    <h5 class="card-title">Server 回傳</h5>
+                                    <pre id="response"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            任務9-B : 控管 API 權限 (任務1~8)
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">請修改 DB 的資料, 依據以下需求, 來控制任務1~8的 API 權限</p>
+                            <p class="card-text">當有 API 存取權限時, API 正常執行, 沒有權限時, 請回傳無權限的資料格式</p>
+                            <table class="table table-stribed">
+                                <thead>
+                                    <tr class="table-info">
+                                        <th colspan="2">任務1~8 的 API 權限需求</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>任務1</th>
+                                        <td>
+                                            任何人都能存取API
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務2</th>
+                                        <td>
+                                            登入後, 才能存取API
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務3</th>
+                                        <td>
+                                            任何人都能存取API
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務4</th>
+                                        <td>
+                                            未登入時, 不可存取 ; 
+                                            登入後, 依照 DB 的資料來控制 API 權限
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務5</th>
+                                        <td>
+                                            任何人都能存取API
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務6</th>
+                                        <td>
+                                            登入後, 才能存取API
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務7</th>
+                                        <td>
+                                            未登入時, 不可存取 ; 
+                                            登入後, 依照 DB 的資料來控制 API 權限
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>任務8</th>
+                                        <td>
+                                            未登入時, 不可存取 ; 
+                                            登入後, 依照 DB 的資料來控制 API 權限
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="card">
+                                <div class="card-header">
+                                    Server 回傳
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">回傳格式 (無權限)</h5>
+                                    <pre>
+                                            {
+                                                "deny" : true
+                                            }
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
