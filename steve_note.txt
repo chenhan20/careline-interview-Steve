@@ -1,3 +1,8 @@
 起專案步驟
 Melvin build  --> Goals欄輸入spring-boot:run  記得選JDK版本否則error
 包JAR檔則 Goals輸入 clean package    --> 產出JAR檔案 (target內)
+
+
+遇到問題1.
+明明成功執行sql卻沒commit進去
+後來發現是h2登入時預設帶入的JDBC URL 跟設定的是不一樣的 雖然也是連的近的去但是裡面跟程式跑的DB是不同個導致此問題(以解)
