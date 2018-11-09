@@ -23,8 +23,12 @@ public class HuserServiceimpl implements HuserService{
 	private JdbcTemplate db;
 
 	@Override
-	public List<HUser> queryUser() {
-		return null;
+	public List<Map<String, Object>> queryUser() {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select email,name from H_USER ");
+		
+		List<Map<String, Object>> userList = db.queryForList(sql.toString());
+		return userList;
 	}
 
 	@Override
