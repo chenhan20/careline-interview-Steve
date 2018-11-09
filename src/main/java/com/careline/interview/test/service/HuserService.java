@@ -11,4 +11,5 @@ public interface HuserService {
 	
 	public List<HUser> queryUser();
 	public void InsertUser(HUser huser);
+	public boolean chkEmail(HUser huser);
 }

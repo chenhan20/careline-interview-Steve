@@ -22,9 +22,12 @@ public class Mission3Controller {
 	@ResponseBody
 	public Map<String,Object> register(HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		huserSerivce.InsertUser(model);
-		
-		System.out.println(model.getEmail());
+		if(huserSerivce.chkEmail(model)) {
+			huserSerivce.InsertUser(model);
+			map.put("memberId", model.getId() +"，恭喜註冊成功囉!");
+		}else {
+			map.put("msg", model.getEmail() +"，此Email有人用過囉!");
+		}
 		return map;
 	}
 	
