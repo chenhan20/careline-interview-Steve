@@ -11,6 +11,7 @@ import com.careline.interview.test.model.HUser;
 public interface HuserService {
 	
 	public List<Map<String, Object>> queryUser();
+	public Map<String, Object> queryUser(HUser huser);
 	public void InsertUser(HUser huser);
 	public boolean chkEmail(HUser huser);
 }

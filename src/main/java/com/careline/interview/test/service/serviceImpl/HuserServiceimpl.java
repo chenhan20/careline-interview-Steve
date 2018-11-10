@@ -3,6 +3,7 @@ package com.careline.interview.test.service.serviceImpl;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,18 @@ public class HuserServiceimpl implements HuserService{
 		Map<String, Object> object = db.queryForMap(sql.toString());
 		String count = object.get("count").toString();
 		return count.equals("0");
+	}
+
+	@Override
+	public Map<String, Object> queryUser(HUser huser) {
+		StringBuffer sql = new StringBuffer();
+		Map<Object,Object> params = new HashMap<>();
+		sql.append(" select * from H_USER WHERE EMAIL='" + huser.getEmail() +"' AND PASSWORD = '"+ huser.getPassword() +"'");
+		params.put("email", huser.getEmail());
+		params.put("password", huser.getPassword());
+		Map<String, Object> userData = db.queryForMap(sql.toString());
+		System.out.println(userData.get("NAME"));
+		return userData;
 	}
 	
 }
