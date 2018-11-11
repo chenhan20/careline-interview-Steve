@@ -1,6 +1,5 @@
 package com.careline.interview.test.service.serviceImpl;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,9 +64,13 @@ public class HuserServiceimpl implements HuserService{
 		sql.append(" select * from H_USER WHERE EMAIL='" + huser.getEmail() +"' AND PASSWORD = '"+ huser.getPassword() +"'");
 		params.put("email", huser.getEmail());
 		params.put("password", huser.getPassword());
-		Map<String, Object> userData = db.queryForMap(sql.toString());
-		System.out.println(userData.get("NAME"));
-		return userData;
+		List<Map<String, Object>> userData = db.queryForList(sql.toString());
+		// 若查無資料回傳null 但感覺應會有更好的做法
+		if(userData.size()==1) {
+			return userData.get(0);
+		}else {
+			return null;
+		}
 	}
 	
 }
