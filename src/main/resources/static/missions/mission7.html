@@ -66,9 +66,13 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text">點擊「上傳照片」後, 請將圖片檔案儲存起來, 並跟會員資料關聯</p>
-                            <form id="dataForm">
+                            <form id="dataForm" enctype="multipart/form-data">
                                 <table class="">
                                     <tbody>
+                           				<tr>
+                                            <th>E-Mail</th>
+                                            <td><input type="text" name="email" /></td>
+                                        </tr>
                                         <tr>
                                             <th>選擇照片</th>
                                             <td><input type="file" name="picture" /></td>

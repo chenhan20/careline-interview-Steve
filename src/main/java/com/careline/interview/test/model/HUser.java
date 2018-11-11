@@ -1,6 +1,9 @@
 package com.careline.interview.test.model;
 
+import java.io.File;
+
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 @Component
 public class HUser {
 	private String id;
@@ -11,6 +14,8 @@ public class HUser {
 	private String oldPassword;
 	private String newPassword;
 	private String newPasswordConfirm;
+	
+	private MultipartFile picture;
 	
 	public String getId() {
 		return id;
@@ -53,5 +58,11 @@ public class HUser {
 	}
 	public void setNewPasswordConfirm(String newPasswordConfirm) {
 		this.newPasswordConfirm = newPasswordConfirm;
+	}
+	public MultipartFile getPicture() {
+		return picture;
+	}
+	public void setPicture(MultipartFile picture) {
+		this.picture = picture;
 	}
 }
