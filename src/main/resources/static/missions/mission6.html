@@ -30,17 +30,25 @@
                 });
 
                 $("#btn2").click(function() {
-                    
-                    ajax({
-                        url : "/mission6/updatePassword",
-                        method : "POST", 
-                        data : new FormData($("#dataForm2")[0]), 
-                        processData: false,
-                        contentType: false, 
-                        success : function(data) {
-                            $("#response").text(prettyJSON(data));
-                        }
-                    });
+                    let oldPassword =$('#oldPassword').val();
+                    let newPassword =$('#newPassword').val();
+                    let newPasswordConfirm =$('#newPasswordConfirm').val();
+                    if(oldPassword===newPasswordConfirm){
+                    	alert('新密碼需與舊密碼不同!');
+                    }else if(oldPassword===newPassword){
+                    	alert('請確認新密碼是否一致')
+                    }else{
+	                    ajax({
+	                        url : "/mission6/updatePassword",
+	                        method : "POST", 
+	                        data : new FormData($("#dataForm2")[0]), 
+	                        processData: false,
+	                        contentType: false, 
+	                        success : function(data) {
+	                            $("#response").text(prettyJSON(data));
+	                        }
+	                    });
+                    }
                 });
 
             });
@@ -92,17 +100,21 @@
                             <form id="dataForm2">
                                 <table class="">
                                     <tbody>
+                                   		<tr>
+                                            <th>信箱</th>
+                                            <td><input type="text" name="email" /></td>
+                                        </tr>
                                         <tr>
                                             <th>舊密碼</th>
-                                            <td><input type="password" name="oldPassword" /></td>
+                                            <td><input type="password" id="oldPassword" name="oldPassword" /></td>
                                         </tr>
                                         <tr>
                                             <th>新密碼</th>
-                                            <td><input type="password" name="newPassword" /></td>
+                                            <td><input type="password" id="newPassword" name="newPassword" /></td>
                                         </tr>
                                         <tr>
                                             <th>新密碼 (再次確認)</th>
-                                            <td><input type="password" name="newPasswordConfirm" /></td>
+                                            <td><input type="password" id="newPasswordConfirm"  name="newPasswordConfirm" /></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>

@@ -3,6 +3,7 @@ package com.careline.interview.test.mission3;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +23,8 @@ public class Mission3Controller {
 	@ResponseBody
 	public Map<String,Object> register(HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		if(huserSerivce.chkEmail(model)) {
+		System.out.println(huserSerivce.chkEmail(model));
+		if(org.h2.util.StringUtils.isNullOrEmpty(huserSerivce.chkEmail(model))) {
 			huserSerivce.InsertUser(model);
 			map.put("memberId", model.getId() +"，恭喜註冊成功囉!");
 		}else {

@@ -8,6 +8,10 @@ public class HUser {
 	private String name;
 	private String password;
 
+	private String oldPassword;
+	private String newPassword;
+	private String newPasswordConfirm;
+	
 	public String getId() {
 		return id;
 	}
@@ -32,5 +36,22 @@ public class HUser {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	public String getOldPassword() {
+		return oldPassword;
+	}
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	public String getNewPasswordConfirm() {
+		return newPasswordConfirm;
+	}
+	public void setNewPasswordConfirm(String newPasswordConfirm) {
+		this.newPasswordConfirm = newPasswordConfirm;
+	}
 }

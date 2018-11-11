@@ -49,12 +49,15 @@ public class HuserServiceimpl implements HuserService{
 	}
 
 	@Override
-	public boolean chkEmail(HUser huser) {
+	public String chkEmail(HUser huser) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select count(*) count from H_USER where EMAIL = '" + huser.getEmail() +"'");
-		Map<String, Object> object = db.queryForMap(sql.toString());
-		String count = object.get("count").toString();
-		return count.equals("0");
+		sql.append(" select ID from H_USER where EMAIL = '" + huser.getEmail() +"'");
+		List<Map<String, Object>> object = db.queryForList(sql.toString());
+		if(object.size()==0) {
+			return null;
+		}else {
+			return (String) object.get(0).get("ID");
+		}
 	}
 
 	@Override
@@ -72,5 +75,47 @@ public class HuserServiceimpl implements HuserService{
 			return null;
 		}
 	}
+
+	@Override
+	public boolean changeProfile(HUser huser,String RecordType) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" UPDATE H_USER set NAME= '" + huser.getName() + "' where EMAIL = '" + huser.getEmail() +"'");
+		int updateNum = db.update(sql.toString());
+		if(updateNum>0) {
+			record(huser,RecordType);
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean changePassword(HUser huser,String RecordType) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" UPDATE H_USER set PASSWORD= '" + huser.getNewPassword() + "' where EMAIL = '" + huser.getEmail() +"'");
+		sql.append(" AND PASSWORD = '"+ huser.getOldPassword() + "'");
+		int updateNum = db.update(sql.toString());
+		if(updateNum>0) {
+			record(huser,RecordType);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	private void record(HUser huser,String RecordType) {
+		StringBuffer sql = new StringBuffer();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/ddHH:mm:ss");
+		String formatStr =formatter.format(new Date());
+
+		sql.append("INSERT　INTO　USER_RECORD　");
+		sql.append(" (USER_ID,CHANGETIME,CHANGEDETAIL)");
+		sql.append(" VALUES  ");
+		sql.append(" ('"+ huser.getId() +"','"+ formatStr +"','"+ RecordType +"') ");
+		db.update(sql.toString());
+		
+	}
+	
 	
 }
