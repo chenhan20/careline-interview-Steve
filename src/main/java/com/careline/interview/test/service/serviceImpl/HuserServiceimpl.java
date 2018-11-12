@@ -1,5 +1,6 @@
 package com.careline.interview.test.service.serviceImpl;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.commonUtil;
 
 
 
@@ -25,7 +27,6 @@ public class HuserServiceimpl implements HuserService{
 	public List<Map<String, Object>> queryUser() {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select email,name from H_USER ");
-		
 		List<Map<String, Object>> userList = db.queryForList(sql.toString());
 		return userList;
 	}
@@ -35,16 +36,14 @@ public class HuserServiceimpl implements HuserService{
 	public void InsertUser(HUser huser) {
 		StringBuffer sql = new StringBuffer();
 		Map<Object,Object> params = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		int random = (int) (Math.random()*100);
-		String formatStr =formatter.format(new Date()) + Integer.toString(random);
 
+		String id =commonUtil.genId();
 		sql.append("INSERT INTO H_USER ");
 		sql.append(" ( ID,email,name,password ) ");
 		sql.append(" VALUES  ");
-		sql.append(" ('" + formatStr +"', '" + huser.getEmail().toString() +"','" + huser.getName() + "','" + huser.getPassword()+ "')");
+		sql.append(" ('" + id +"', '" + huser.getEmail().toString() +"','" + huser.getName() + "','" + huser.getPassword()+ "')");
 		db.update(sql.toString());
-		huser.setId(formatStr);
+		huser.setId(id);
 		System.out.println("db success");
 	}
 
@@ -104,6 +103,24 @@ public class HuserServiceimpl implements HuserService{
 	}
 	
 	
+	@Override
+	public void uploadImage(HUser huser, String path,String url) throws Exception {
+		if(huser.getPicture().isEmpty()) {
+			huser.setErrorMsg("無檔案上傳");
+			return;
+		}else {
+			File saveFile = new File(path);
+			if (!saveFile.exists()){
+				saveFile.mkdirs();
+			}
+			String RealFilePath =path+huser.getPicture().getOriginalFilename();
+			huser.getPicture().transferTo(new File(RealFilePath));
+			uploadImg(huser,url);
+		}
+	}
+	
+	
+	
 	private void record(HUser huser,String RecordType) {
 		StringBuffer sql = new StringBuffer();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/ddHH:mm:ss");
@@ -115,6 +132,32 @@ public class HuserServiceimpl implements HuserService{
 		sql.append(" ('"+ huser.getId() +"','"+ formatStr +"','"+ RecordType +"') ");
 		db.update(sql.toString());
 		
+	}
+
+	private void uploadImg(HUser huser,String url) {
+		StringBuffer sql = new StringBuffer();
+		String id =commonUtil.genId();
+
+		sql.append("INSERT　INTO　REF_IMAGE　");
+		sql.append(" (ID,USER_ID,ATTACH_NAME,IMG_URL)");
+		sql.append(" VALUES  ");
+		sql.append(" ('" + id + "','"+ huser.getId() +"','"+ huser.getPicture().getOriginalFilename() +"','"+ url +"') ");
+		db.update(sql.toString());
+		
+	}
+
+	@Override
+	public Map<String, Object> getPicture(HUser huser) {
+		StringBuffer sql = new StringBuffer();
+		Map<Object,Object> params = new HashMap<>();
+		sql.append(" select * from REF_IMAGE WHERE USER_ID='" + huser.getId() +"'");
+		List<Map<String, Object>> ImageData = db.queryForList(sql.toString());
+		// 若查無資料回傳null 但感覺應會有更好的做法
+		if(ImageData.size()==1) {
+			return ImageData.get(0);
+		}else {
+			return null;
+		}
 	}
 	
 	
