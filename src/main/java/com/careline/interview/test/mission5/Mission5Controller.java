@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;import org.springf
 
 import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.commonUtil;
 
 @RestController
 public class Mission5Controller {
@@ -25,13 +26,14 @@ public class Mission5Controller {
 	@ResponseBody
 	public Map<String,Object> login(HttpServletRequest request,HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		if(request.getSession().getAttribute("LoginName")==null){
+		Map<String,Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+		if(!commonUtil.chkLogin(userData)) {
 			//確認帳密資訊
-			Map<String ,Object> userMap = huserSerivce.queryUser(model);
-			if(userMap!=null) {
-				map.put("successMsg", "登入成功" + userMap.get("NAME"));
+			userData = huserSerivce.queryUser(model);
+			if(userData!=null) {
+				map.put("successMsg", "登入成功" + userData.get("NAME"));
 //				map.put("userMap", userMap);
-				request.getSession().setAttribute("LoginName", userMap.get("NAME"));
+				request.getSession().setAttribute("LoginUser", userData);
 			}else {
 				map.put("errorMsg", "EMAIL或是密碼錯誤!");
 			}
@@ -46,8 +48,9 @@ public class Mission5Controller {
 	@ResponseBody
 	public Map<String,Object> logout(HttpServletRequest request,HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		if(request.getSession().getAttribute("LoginName")!=null){
-			request.getSession().removeAttribute("LoginName");
+		Map<String,Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+		if(commonUtil.chkLogin(userData)) {
+			request.getSession().removeAttribute("LoginUser");
 			map.put("Msg", "登出成功");
 		}else {
 			map.put("Msg", "你沒有登入!");

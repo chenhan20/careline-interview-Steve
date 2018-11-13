@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.commonMsg;
+import com.careline.interview.test.util.commonUtil;
 
 @RestController
 public class Mission6Controller {
@@ -26,17 +28,17 @@ public class Mission6Controller {
 	@ResponseBody
 	public Map<String,Object> updateProfile(HttpServletRequest request,HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		String id = huserSerivce.chkEmail(model);
-		model.setId(StringUtils.isNullOrEmpty(id)?"":id);
-		if(!StringUtils.isNullOrEmpty(id)) {
+		Map<String,Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+		if(commonUtil.chkLogin(userData)) {
+
+			model.setId((String) userData.get("ID"));
 			if(huserSerivce.changeProfile(model,CHANGE_TYPE_NAME)) {
 				map.put("success", "變更成功");
 			}else{
 				map.put("errorMsg", "變更失敗");
 			};
-		
 		}else {
-			map.put("errorMsg","無此信箱資料故無法修改!");
+			map.put("ErrorMsg",commonMsg.NONLOGIN_MSG);
 		}
 		return map;
 	}
@@ -45,17 +47,16 @@ public class Mission6Controller {
 	@ResponseBody
 	public Map<String,Object> updatePassword(HttpServletRequest request,HUser model) {
 		Map<String ,Object> map = new HashMap<>();
-		String id = huserSerivce.chkEmail(model);
-		model.setId(StringUtils.isNullOrEmpty(id)?"":id);
-		if(!StringUtils.isNullOrEmpty(id)) {
+		Map<String,Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+		if(commonUtil.chkLogin(userData)) {
+			model.setId((String) userData.get("ID"));
 			if(huserSerivce.changePassword(model,CHANGE_TYPE_PASSWORD)) {
 				map.put("success", "變更成功");
 			}else{
 				map.put("errorMsg", "變更失敗，舊密碼錯誤");
 			};
-		
 		}else {
-			map.put("errorMsg","無此信箱資料故無法修改!");
+			map.put("errorMsg",commonMsg.NONLOGIN_MSG);
 		}
 		return map;
 	}

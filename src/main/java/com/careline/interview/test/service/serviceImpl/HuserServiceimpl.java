@@ -63,7 +63,7 @@ public class HuserServiceimpl implements HuserService{
 	public Map<String, Object> queryUser(HUser huser) {
 		StringBuffer sql = new StringBuffer();
 		Map<Object,Object> params = new HashMap<>();
-		sql.append(" select * from H_USER WHERE EMAIL='" + huser.getEmail() +"' AND PASSWORD = '"+ huser.getPassword() +"'");
+		sql.append(" select ID,EMAIL,NAME from H_USER WHERE EMAIL='" + huser.getEmail() +"' AND PASSWORD = '"+ huser.getPassword() +"'");
 		params.put("email", huser.getEmail());
 		params.put("password", huser.getPassword());
 		List<Map<String, Object>> userData = db.queryForList(sql.toString());
@@ -78,7 +78,7 @@ public class HuserServiceimpl implements HuserService{
 	@Override
 	public boolean changeProfile(HUser huser,String RecordType) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE H_USER set NAME= '" + huser.getName() + "' where EMAIL = '" + huser.getEmail() +"'");
+		sql.append(" UPDATE H_USER set NAME= '" + huser.getName() + "' where ID = '" + huser.getId() +"'");
 		int updateNum = db.update(sql.toString());
 		if(updateNum>0) {
 			record(huser,RecordType);
@@ -139,9 +139,9 @@ public class HuserServiceimpl implements HuserService{
 		String id =commonUtil.genId();
 
 		sql.append("INSERT　INTO　REF_IMAGE　");
-		sql.append(" (ID,USER_ID,ATTACH_NAME,IMG_URL)");
+		sql.append(" (ID,USER_ID,ATTACH_NAME,IMG_URL,IMG_SIZE)");
 		sql.append(" VALUES  ");
-		sql.append(" ('" + id + "','"+ huser.getId() +"','"+ huser.getPicture().getOriginalFilename() +"','"+ url +"') ");
+		sql.append(" ('" + id + "','"+ huser.getId() +"','"+ huser.getPicture().getOriginalFilename() +"','"+ url +"','"+ huser.getPicture().getSize() +"') ");
 		db.update(sql.toString());
 		
 	}
