@@ -14,7 +14,8 @@
         
         <script type="text/javascript">
             $(function() {
-                
+                const version = ""+new Date().getTime();
+
                 $("#btn1").click(function() {
                     
                     ajax({
@@ -24,7 +25,11 @@
                         processData: false,
                         contentType: false, 
                         success : function(data) {
-                            $("#response").text(prettyJSON(data));
+                            if(data.login){
+                                $("#response").text(prettyJSON(data));
+                            }else{
+                                location.href = "mission5.html"+"?v="+version;
+                            }
                         }
                     });
                 });
@@ -34,15 +39,19 @@
                     ajax({
                         url : "/mission7/getPicture",
                         success : function(data) {
-                            $("#response2").text(prettyJSON(data));
-                            if (data.success === true) {
-                                if ($.trim(data.imageUrl) === "") {
-                                    $("#data2DisplayImage").empty().text("尚未上傳照片");
+                            if(data.login){
+                                $("#response2").text(prettyJSON(data));
+                                if (data.success === true) {
+                                    if ($.trim(data.imageUrl) === "") {
+                                        $("#data2DisplayImage").empty().text("尚未上傳照片");
+                                    } else {
+                                        $("#data2DisplayImage").empty().append("<img src='"+data.imageUrl+"' style='max-width:200px; max-height:200px;' />");
+                                    }
                                 } else {
-                                    $("#data2DisplayImage").empty().append("<img src='"+data.imageUrl+"' style='max-width:200px; max-height:200px;' />");
+                                    $("#data2DisplayImage").empty().text("伺服器回傳錯誤 : " + data.errorMsg);
                                 }
-                            } else {
-                                $("#data2DisplayImage").empty().text("伺服器回傳錯誤 : " + data.errorMsg);
+                            }else{
+                                location.href = "mission5.html"+"?v="+version;
                             }
                         }
                     });
