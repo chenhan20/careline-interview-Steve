@@ -32,4 +32,7 @@ public interface HuserService {
 
 	// 取得圖片
 	public Map<String, Object> getPicture(HUser huser);
+	
+	// 查詢USER的興趣
+	public List<Map<String, Object>> queryUserInterests(String userId);
 }

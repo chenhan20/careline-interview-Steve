@@ -31,7 +31,7 @@
         
         <script type="text/javascript">
             $(function() {
-                
+                const version = ""+new Date().getTime();
                 var INTERESTS = {
                     "Movie" : "電影", 
                     "Food" : "美食", 
@@ -86,23 +86,27 @@
                     ajax({
                         url : "/mission8/getInterest", 
                         success : function(data) {
-                            $("#response").text(prettyJSON(data));
-                            
-                            if (data.success === true) {
-                                var con = $("#interestContainer").empty();
-                                $.each(data.interestList, function(i, interest) {
-                                    var ele = $(
-                                        "<button type='button' data-key='"+interest.key+"' class='btnInterest btn btn-success' style='margin-right:10px;'>"
-                                        + INTERESTS[interest.key]
-                                        + "  <i class='iconChecked fa fa-check-square'></i>"
-                                        + "  <i class='iconUnchecked fa fa-square'></i>"
-                                        + "</button>"
-                                    );
-                                    $(ele).toggleClass("checked", interest.isChecked);
-                                    $(con).append(ele);
-                                });
-                            } else {
-                                $("#interestContainer").empty().text("伺服器回傳錯誤 : "+data.errorMsg);
+                            if(data.login){
+                                $("#response").text(prettyJSON(data));
+                                
+                                if (data.success === true) {
+                                    var con = $("#interestContainer").empty();
+                                    $.each(data.interestList, function(i, interest) {
+                                        var ele = $(
+                                            "<button type='button' data-key='"+interest.key+"' class='btnInterest btn btn-success' style='margin-right:10px;'>"
+                                            + INTERESTS[interest.key]
+                                            + "  <i class='iconChecked fa fa-check-square'></i>"
+                                            + "  <i class='iconUnchecked fa fa-square'></i>"
+                                            + "</button>"
+                                        );
+                                        $(ele).toggleClass("checked", interest.isChecked);
+                                        $(con).append(ele);
+                                    });
+                                } else {
+                                    $("#interestContainer").empty().text("伺服器回傳錯誤 : "+data.errorMsg);
+                                }
+                            }else{
+                                location.href = "mission5.html"+"?v="+version;
                             }
                         }
                     });

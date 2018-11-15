@@ -159,4 +159,12 @@ public class HuserServiceimpl implements HuserService {
 		}
 	}
 
+	@Override
+	public List<Map<String, Object>> queryUserInterests(String userId) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select * from INTERESTS ");// where USER_ID = '"+ userId + "'");
+		List<Map<String, Object>> userInterestsList = db.queryForList(sql.toString());
+		return userInterestsList;
+	}
+
 }
