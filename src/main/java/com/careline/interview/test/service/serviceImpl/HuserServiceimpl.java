@@ -162,9 +162,39 @@ public class HuserServiceimpl implements HuserService {
 	@Override
 	public List<Map<String, Object>> queryUserInterests(String userId) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select * from INTERESTS ");// where USER_ID = '"+ userId + "'");
+		// select a.INTERESTS_CODE key,DECODE(b.INTERESTS_CODE,null,false,true)
+		// isChecked from INTERESTS a LEFT JOIN USER_INTERESTS b ON a.INTERESTS_CODE =
+		// b.INTERESTS_CODE AND b.USER_ID = :userId ;
+
+		sql.append(" select a.INTERESTS_CODE key, ");
+		sql.append(" DECODE(b.INTERESTS_CODE,null,false,true) isChecked ");
+		sql.append(" from INTERESTS a LEFT JOIN USER_INTERESTS b ");
+		sql.append(" ON a.INTERESTS_CODE = b.INTERESTS_CODE ");
+		sql.append(" AND b.USER_ID = '" + userId + "' ");
+
 		List<Map<String, Object>> userInterestsList = db.queryForList(sql.toString());
 		return userInterestsList;
+	}
+
+	@Override
+	public void insertInterests(String interestsCode, String userId) {
+		StringBuffer sql = new StringBuffer();
+		String id = commonUtil.genId();
+		sql.append("INSERT　INTO　USER_INTERESTS　");
+		sql.append(" (ID,USER_ID,INTERESTS_CODE) ");
+		sql.append(" VALUES  ");
+		sql.append(" ('" + id + "','" + userId + "','" + interestsCode + "' ) ");
+		db.update(sql.toString());
+
+	}
+
+	@Override
+	public void deleteInterests(String userId) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("DELETE　USER_INTERESTS　");
+		sql.append(" where USER_ID = '" + userId + "' ");
+		db.update(sql.toString());
+
 	}
 
 }
