@@ -52,7 +52,6 @@
                             "isChecked" : $(btn).hasClass("checked")
                         });
                     });
-                    debugger;
                     ajax({
                         url : "/mission8/saveInterest", 
                         method : "POST", 
@@ -92,7 +91,6 @@
                                 if (data.success === true) {
                                     var con = $("#interestContainer").empty();
                                     $.each(data.interestList, function(i, interest) {
-                                        debugger;
                                         var ele = $(
                                             "<button type='button' data-key='"+interest.KEY+"' class='btnInterest btn btn-success' style='margin-right:10px;'>"
                                             + INTERESTS[interest.KEY]
