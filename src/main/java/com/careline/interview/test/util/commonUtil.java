@@ -13,6 +13,20 @@ public class commonUtil {
 		return formatStr;
 	}
 
+	public static String genTime(String timeType) {
+		SimpleDateFormat formatter = null;
+		switch (timeType) {
+		case "Time":
+			formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			break;
+		case "Date":
+			formatter = new SimpleDateFormat("yyyy/MM/dd");
+			break;
+		default:
+		}
+		return formatter.format(new Date());
+	}
+
 	// 待補規則 先這樣判斷
 	public static boolean chkLogin(Map<String, Object> loginUser) {
 		if (loginUser == null) {

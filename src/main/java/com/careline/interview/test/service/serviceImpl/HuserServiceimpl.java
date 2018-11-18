@@ -121,13 +121,10 @@ public class HuserServiceimpl implements HuserService {
 
 	private void record(HUser huser, String RecordType) {
 		StringBuffer sql = new StringBuffer();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/ddHH:mm:ss");
-		String formatStr = formatter.format(new Date());
-
 		sql.append("INSERT　INTO　USER_RECORD　");
 		sql.append(" (USER_ID,CHANGETIME,CHANGEDETAIL)");
 		sql.append(" VALUES  ");
-		sql.append(" ('" + huser.getId() + "','" + formatStr + "','" + RecordType + "') ");
+		sql.append(" ('" + huser.getId() + "','" + commonUtil.genTime("Time") + "','" + RecordType + "') ");
 		db.update(sql.toString());
 
 	}

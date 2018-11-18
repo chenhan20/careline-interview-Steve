@@ -25,6 +25,7 @@ public class Mission2Controller {
 	@RequestMapping("/mission2/compute")
 	@ResponseBody
 	public Map<String,Object> compute(@RequestBody String data) {
+		System.out.println("run");
 		Map<String ,Object> map = new HashMap<>();
 
 		ArrayList<Integer> numList = new ArrayList<>();
