@@ -1,3 +1,5 @@
+let modifyEmail;
+let loginUser;
 $(function(){
     $('.init').hide();
     $('.query').show();
@@ -10,13 +12,15 @@ $(function(){
         register();
     });
 
-    $(document).on('click','.modify',function(){
-        let email = $(this).parent().attr('id');
-        modifyUser(email);
-        $('#modify').click();
+    $('#btn_login').click(function(){
+        login();
     });
 
-    call('query'); //預設進入query
+    $(document).on('click','.modifyTable',function(){
+        modifyEmail = $(this).parent().attr('id');
+        $('#modify').click();
+    });
+    call('login'); //預設進入login
 });
 
 let register = () =>{
@@ -38,53 +42,95 @@ let register = () =>{
         }
     });
 };
+let login = () =>{
+    loginUser =null; //避免殘留
+    ajax({
+        url : "/mission5/login",
+        method : "POST", 
+        data : new FormData($("#loginForm")[0]), 
+        processData: false,
+        contentType: false, 
+        success : function(data) {
+            let Msg;
+            if(data.errorMsg!=null){
+                Msg=data.errorMsg;
+            }else{
+                loginUser = data.userMap;
+                $('#userName').text(loginUser.NAME);
+                Msg=data.successMsg;
+                $("#loginForm :input").val('');
+            }
+            $('.loginMsg').text(Msg);
+        }
+    });
+};
 
 let call = (method) =>{
     $('.init').hide();
     $('.'+method).show();
     switch (method){
+        case 'login' :
+            break;
         case 'query' :
             queryUser();
             break;
         case 'add' :
             addUser();
             break;
-        case 'add' :
-            addUser();
+        case 'modify' :
+            modifyUser(modifyEmail);
             break;
+        default :
+            $('#login').click();
     }
 };
 
 let modifyUser = (email) =>{
-    ajax({
-        url : "/mission11/getMembers",
-        data : {"email" : email},
-        success : function(data) {
-            renderModifyTable(data.memberList);
-        }
-    });
+    let member;
+    if(email!=null){
+        ajax({
+            url : "/mission11/getMembers",
+            data : {"email" : email},
+            async : false,
+            success : function(data) {
+                member = data.member;
+            }
+        });
+    }else{
+        $('#query').click();
+    }
+    renderModifyData(member);
 };
 
 let addUser = () =>{
-    var tbody = $("#adddataTable tbody").empty();
+    //前端先這樣基礎卡控  後端寫在攔截器 若沒登入也是直接擋掉
+    if(loginUser!=null){
+        let tbody = $("#adddataTable tbody").empty();
+        let tr = $(
+                "<tr>"
+                + "  <td><input type='text' name='email' class='form-control' placeholder='Enter email'></td>"
+                + "  <td><input type='text' name='name' class='form-control' placeholder='Enter Name'></td>"
+                + "  <td><input type='password' name='password' class='form-control' placeholder='Enter Password'></td>"
+                + "</tr>"
+            );
+        $(tbody).append(tr);
+    }else{
+        $('#login').click();
+    }
 
-    var tr = $(
-            "<tr>"
-            + "  <td><input type='text' name='email' class='form-control' placeholder='Enter email'></td>"
-            + "  <td><input type='text' name='name' class='form-control' placeholder='Enter Name'></td>"
-            + "  <td><input type='password' name='password' class='form-control' placeholder='Enter Password'></td>"
-            + "</tr>"
-        );
     
-    $(tbody).append(tr);
 };
 let queryUser = () =>{
-    ajax({
-        url : "/mission4/getAllMembers",
-        success : function(data) {
-            renderQueryTable(data.memberList);
-        }
-    });
+    if(loginUser!=null){
+        ajax({
+            url : "/mission4/getAllMembers",
+            success : function(data) {
+                renderQueryTable(data.memberList);
+            }
+        });
+    }else{
+        $('#login').click();
+    }
 }
 let renderQueryTable = (memberList) => {
     var tbody = $("#querydataTable tbody").empty();
@@ -97,7 +143,7 @@ let renderQueryTable = (memberList) => {
                 "<tr id='"+member.EMAIL+"'>"
                 + "  <td>"+member.EMAIL+"</td>"
                 + "  <td>"+member.NAME+"</td>"
-                + "  <td class='modify cursor'><i class='fas fa-wrench'></i></td>"
+                + "  <td class='modifyTable cursor'><i class='fas fa-wrench'></i></td>"
                 + "</tr>"
             );
             
@@ -105,16 +151,9 @@ let renderQueryTable = (memberList) => {
         });
     }
 }
-let renderModifyTable = (memberList) =>{
-    var tbody = $("#querydataTable tbody").empty();
-    
-    $.each(memberList, function (i, member) {
-        var tr = $(
-            "<tr>"
-            + "  <td>"+member.EMAIL+"</td>"
-            + "  <td>"+member.NAME+"</td>"
-            + "</tr>");
-        
-        $(tbody).append(tr);
-    });
+let renderModifyData = (member) =>{
+    $('#modifydataForm :input').val('');
+    modifyEmail=null;
+    $('#modifyEmail').val(member.EMAIL);
+    $('#modifyName').val(member.NAME);
 }

@@ -32,13 +32,13 @@ public class Mission5Controller {
 			userData = huserSerivce.queryUser(model);
 			if (userData != null) {
 				map.put("successMsg", "登入成功" + userData.get("NAME"));
-				// map.put("userMap", userMap);
+				map.put("userMap", userData);
 				request.getSession().setAttribute("LoginUser", userData);
 			} else {
-				map.put("errorMsg", "EMAIL或是密碼錯誤!");
+				map.put("errorMsg", "EMAIL或密碼錯誤!");
 			}
 		} else {
-			map.put("Msg", "你已經登入了");
+			map.put("errorMsg", "你已經登入了");
 		}
 		return map;
 
