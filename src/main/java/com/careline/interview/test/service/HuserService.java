@@ -15,6 +15,9 @@ public interface HuserService {
 	// 根據條件查詢USER
 	public Map<String, Object> queryUser(HUser huser);
 
+	// 根據信箱查詢USER
+	public Map<String, Object> queryUser(String email);
+
 	// 新增USER
 	public void InsertUser(HUser huser);
 

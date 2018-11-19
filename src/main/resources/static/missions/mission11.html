@@ -7,11 +7,12 @@
         
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/common.css" rel="stylesheet">
-        
+        <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="/js/common.js"></script>
-
+        <script src="/js/mission11.js"></script>
+        <link href="/css/mission11.css" rel="stylesheet">
     </head>
     <body>
         <div class="container-fluid">
@@ -25,6 +26,96 @@
                     <p class="card-text"> - 新增會員資料</p>
                     <p class="card-text"> - 修改會員資料(Email, 名稱, 密碼, 照片)</p>
                     <p class="card-text"> - 強制登出會員</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    任務11 - 會員管理介面
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="list-group col-2"">
+                            <a href="#" class="list-group-item list-group-item-action active" id="query">
+                                <i class="fas fa-search"></i>查詢會員
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action" id="add"><i class="fas fa-plus-circle"></i>新增會員</a>
+                            <a href="#" class="list-group-item list-group-item-action" id="modify"><i class="fas fa-wrench"></i>設定會員資料</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-user-circle"></i>個人資料</a>
+                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-address-card"></i></a>
+                        </div>
+                        <div class="col rightbox">
+                            <div class="init query col-8">
+                                <table id="querydataTable" class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>E-Mail</th>
+                                            <th>稱呼名稱</th>
+                                            <th>編輯</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <!-- <td class="text-right" colspan="3">
+                                                <button id="btn_" type="button" class="btn btn-primary">送出</button>
+                                            </td> -->
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="init add col-8">
+                                <form id="dataForm">
+                                    <table id="adddataTable" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>E-Mail</th>
+                                                <th>稱呼名稱</th>
+                                                <th>密碼</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left" colspan="2">
+                                                    <div class="alert alert-light Msg" role="alert"></div>
+                                                </td>
+                                                <td class="text-center" colspan="1">
+                                                    <button id="btn_add" type="button" class="btn btn-primary">送出</button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="init modify col-8">
+                                <form id="dataForm">
+                                    <table id="modifydataTable" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>E-Mail</th>
+                                                <th>稱呼名稱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-left" colspan="1">
+                                                    <div class="alert alert-light modifyMsg" role="alert"></div>
+                                                </td>
+                                                <td class="text-center" colspan="1">
+                                                    <button id="btn_modify" type="button" class="btn btn-primary">修改送出</button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                   
                 </div>
             </div>
         </div>

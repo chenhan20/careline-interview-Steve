@@ -76,6 +76,16 @@ public class HuserServiceimpl implements HuserService {
 	}
 
 	@Override
+	public Map<String, Object> queryUser(String email) {
+		StringBuffer sql = new StringBuffer();
+		Map<Object, Object> params = new HashMap<>();
+		sql.append(" select EMAIL,NAME from H_USER WHERE EMAIL='" + email + "'");
+		Map<String, Object> userData = db.queryForMap(sql.toString());
+		// 若查無資料回傳null 但感覺應會有更好的做法
+		return userData;
+	}
+
+	@Override
 	public boolean changeProfile(HUser huser, String RecordType) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" UPDATE H_USER set NAME= '" + huser.getName() + "' where ID = '" + huser.getId() + "'");

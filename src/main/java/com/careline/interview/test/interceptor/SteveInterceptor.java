@@ -25,7 +25,6 @@ public class SteveInterceptor implements HandlerInterceptor {
 		// 權限卡控 之後弄在這邊
 		// 執行次數 之後弄在這邊
 		String Url = request.getRequestURI();
-		System.out.println(Url);
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
 		String userId;
 		boolean login = commonUtil.chkLogin(userData);
