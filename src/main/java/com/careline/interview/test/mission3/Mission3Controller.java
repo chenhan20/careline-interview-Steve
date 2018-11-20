@@ -28,7 +28,7 @@ public class Mission3Controller {
 			map.put("msg", e.getMessage());
 			return map;
 		}
-		if (org.h2.util.StringUtils.isNullOrEmpty(huserSerivce.chkEmail(model))) {
+		if (org.h2.util.StringUtils.isNullOrEmpty(huserSerivce.chkEmail(model.getEmail()))) {
 			huserSerivce.InsertUser(model);
 			map.put("memberId", model.getId() + "，恭喜註冊成功囉!");
 		} else {

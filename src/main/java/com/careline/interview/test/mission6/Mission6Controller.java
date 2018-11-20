@@ -18,9 +18,6 @@ import com.careline.interview.test.util.commonUtil;
 
 @RestController
 public class Mission6Controller {
-	public final String CHANGE_TYPE_NAME = "修改名稱";
-	public final String CHANGE_TYPE_PASSWORD = "修改密碼";
-
 	@Autowired
 	HuserService huserSerivce;
 
@@ -32,12 +29,11 @@ public class Mission6Controller {
 		boolean login = commonUtil.chkLogin(userData);
 		if (login) {
 			model.setId((String) userData.get("ID"));
-			if (huserSerivce.changeProfile(model, CHANGE_TYPE_NAME)) {
+			if (huserSerivce.changeProfile(model, commonMsg.CHANGE_TYPE_NAME)) {
 				map.put("success", "變更成功");
 			} else {
-				map.put("errorMsg", "變更失敗");
+				map.put("ErrorMsg", "變更失敗");
 			}
-			;
 		} else {
 			map.put("ErrorMsg", commonMsg.NONLOGIN_MSG);
 		}
@@ -52,7 +48,7 @@ public class Mission6Controller {
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
 		if (commonUtil.chkLogin(userData)) {
 			model.setId((String) userData.get("ID"));
-			if (huserSerivce.changePassword(model, CHANGE_TYPE_PASSWORD)) {
+			if (huserSerivce.changePassword(model, commonMsg.CHANGE_TYPE_PASSWORD)) {
 				map.put("success", "變更成功");
 			} else {
 				map.put("errorMsg", "變更失敗，舊密碼錯誤");

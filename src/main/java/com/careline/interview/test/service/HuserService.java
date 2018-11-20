@@ -21,8 +21,8 @@ public interface HuserService {
 	// 新增USER
 	public void InsertUser(HUser huser);
 
-	// 檢核是否有
-	public String chkEmail(HUser huser);
+	// 檢核是否有重複信箱
+	public String chkEmail(String email);
 
 	// 變更USER名稱
 	public boolean changeProfile(HUser huser, String RecordType);
@@ -45,4 +45,6 @@ public interface HuserService {
 	// 新增USER的興趣
 	public void insertInterests(String interestsCode, String userId);
 
+	// 更新USER資料
+	public void updateUser(HUser huser, String RecordType, String path, String url, Map<String, Object> map);
 }

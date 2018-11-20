@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Map;
 
 public class commonUtil {
-
 	public static String genId() {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		int random = (int) (Math.random() * 100);

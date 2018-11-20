@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.commonMsg;
 import com.careline.interview.test.util.commonUtil;
 
 @Service
@@ -47,9 +49,9 @@ public class HuserServiceimpl implements HuserService {
 	}
 
 	@Override
-	public String chkEmail(HUser huser) {
+	public String chkEmail(String email) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select ID from H_USER where EMAIL = '" + huser.getEmail() + "'");
+		sql.append(" select ID from H_USER where EMAIL = '" + email + "'");
 		List<Map<String, Object>> object = db.queryForList(sql.toString());
 		if (object.size() == 0) {
 			return null;
@@ -65,7 +67,7 @@ public class HuserServiceimpl implements HuserService {
 		sql.append(
 				" select a.ID,a.EMAIL,a.NAME,(b.IMG_URL || b.ATTACH_NAME) IMGURL from H_USER a LEFT JOIN REF_IMAGE b ");
 		sql.append(" ON a.ID=b.USER_ID ");
-		sql.append(" AND a.EMAIL='" + huser.getEmail() + "' ");
+		sql.append(" WHERE  a.EMAIL='" + huser.getEmail() + "' ");
 		sql.append(" AND a.PASSWORD = '" + huser.getPassword() + "' ");
 
 		params.put("email", huser.getEmail());
@@ -86,7 +88,7 @@ public class HuserServiceimpl implements HuserService {
 		sql.append(" select a.ID,a.EMAIL,a.NAME,(b.IMG_URL || b.ATTACH_NAME) IMGURL ");
 		sql.append(" from H_USER a LEFT JOIN REF_IMAGE b ");
 		sql.append(" ON a.ID=b.USER_ID ");
-		sql.append(" AND a.EMAIL='" + email + "'");
+		sql.append(" WHERE a.EMAIL='" + email + "'");
 		Map<String, Object> userData = db.queryForMap(sql.toString());
 		// 若查無資料回傳null 但感覺應會有更好的做法
 		return userData;
@@ -219,7 +221,45 @@ public class HuserServiceimpl implements HuserService {
 		sql.append("DELETE　USER_INTERESTS　");
 		sql.append(" where USER_ID = '" + userId + "' ");
 		db.update(sql.toString());
+	}
 
+	@Override
+	@Transactional
+	public void updateUser(HUser huser, String RecordType, String path, String url, Map<String, Object> map) {
+		StringBuffer sql = new StringBuffer();
+		int updateNum = 0;
+		if (!huser.getNewEmailConfirm().equals(huser.getEmail())) {
+			// 確認此EMAIL還沒人使用過
+			if (StringUtils.isNullOrEmpty(chkEmail(huser.getNewEmailConfirm()))) {
+				sql.append(" UPDATE H_USER set EMAIL= '" + huser.getNewEmailConfirm() + "'");
+				sql.append(" where ID = '" + huser.getId() + "'");
+				updateNum += db.update(sql.toString());
+				sql = new StringBuffer();
+			} else {
+				map.put("Msg", commonMsg.EMAIL_REPEAT_MSG);
+				return; // 若信箱重複直接回傳了不繼續執行
+			}
+		}
+
+		sql.append(" UPDATE H_USER set NAME= '" + huser.getName() + "' ");
+		sql.append(" where ID = '" + huser.getId() + "'");
+		updateNum += db.update(sql.toString());
+
+		// 更新照片
+		try {
+			uploadImage(huser, path, url);
+			map.put("IMGURL", url + huser.getPicture().getOriginalFilename());
+		} catch (Exception e) {
+			map.put("Msg", e.getMessage());
+			e.printStackTrace();
+			return;
+		}
+
+		if (updateNum > 0) {
+			record(huser, RecordType);
+		} else {
+			map.put("Msg", commonMsg.UPDATE_ERROR_MSG);
+		}
 	}
 
 }

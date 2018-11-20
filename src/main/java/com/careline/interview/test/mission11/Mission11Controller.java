@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
+import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.CommonService;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.commonMsg;
+import com.careline.interview.test.util.commonUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +38,23 @@ public class Mission11Controller {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
         map.put("userData", userData);
+        return map;
+    }
+
+    @RequestMapping("/mission11/modify")
+    @ResponseBody
+    public Map<String, Object> modify(HttpServletRequest request, HUser model) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+        String url = "/images/" + model.getId() + "/";
+        String path = request.getServletContext().getRealPath(url);
+        boolean login = commonUtil.chkLogin(userData);
+        if (login) {
+            huserSerivce.updateUser(model, commonMsg.CHANGE_TYPE_UPDATE, path, url, map);
+        } else {
+            map.put("Msg", commonMsg.NONLOGIN_MSG);
+        }
+        map.put("login", login);
         return map;
     }
 

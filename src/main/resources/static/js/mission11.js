@@ -15,6 +15,9 @@ $(function(){
     $('#btn_login').click(function(){
         login();
     });
+    $('#btn_modify').click(function(){
+        modify();
+    });
 
     $(document).on('click','.modifyTable',function(){
         modifyEmail = $(this).parent().attr('id');
@@ -22,6 +25,32 @@ $(function(){
     });
     call('login'); //預設進入login
 });
+
+let modify =() =>{
+    ajax({
+        url : "/mission11/modify",
+        method : "POST", 
+        data : new FormData($("#modifyDataForm")[0]), 
+        processData: false,
+        contentType: false, 
+        success : function(data) {
+            let Msg;
+            if(!data.login){
+                call('login'); //預設進入login
+            }else if(data.msg!=null){
+                Msg=data.msg;
+            }else{
+                if ($.trim(data.IMGURL) === "") {
+                    $(".userImg").empty().text("尚未上傳照片");
+                } else {
+                    $(".userImg").empty().append("<img src='"+data.IMGURL+"' style='max-width:200px; max-height:200px;' />");
+                }
+                Msg='更新成功';
+            }
+            $('.modifyMsg').text(Msg);
+        }
+    });
+}
 
 // RESTful方法不知道如何像是jsp一樣用tag取session取值 所以每次重刷頁面都要先來抓session資訊
 let getSession = () =>{
@@ -146,7 +175,6 @@ let addUser = () =>{
     
 };
 let queryUser = () =>{
-    debugger;
     if(loginUser!=null){
         ajax({
             url : "/mission4/getAllMembers",
@@ -178,10 +206,10 @@ let renderQueryTable = (memberList) => {
     }
 }
 let renderModifyData = (member) =>{
-    debugger;
     $('#modifyDataForm :input').val('');
     modifyEmail=null;
-    $('#modifyEmail').val(member.EMAIL);
+    $('#modifyId').val(member.ID);
+    $('.modifyEmail').val(member.EMAIL);
     $('#modifyName').val(member.NAME);
     if ($.trim(member.IMGURL) === "") {
         $(".userImg").empty().text("尚未上傳照片");

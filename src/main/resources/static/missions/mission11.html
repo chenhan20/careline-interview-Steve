@@ -111,25 +111,28 @@
                         </form>
                     </div>
                     <div class="init modify col-12">
-                        <form id="modifyDataForm">
-                            <div id="" class="form-group offset-2">
-                                <div class="col-5">
-                                    <label for="">用戶圖片</label>
-                                    <small>(再上傳一次會將前一張圖蓋掉)</small>
-                                    <input type="file" class="form-control" name="picture" />
-                                </div>
-                                <div class="col-5 userImg">
-                                </div>
-                                <div class="col-5">
-                                    <label for="">E-Mail</label>
-                                    <input type="text" class="form-control" id="modifyEmail">
-                                </div>
-                                <div class="col-5">
-                                    <label for="">稱呼名稱</label>
-                                    <input type="text" class="form-control" id="modifyName">
+                        <form id="modifyDataForm" enctype="multipart/form-data">
+                            <input type="hidden" name="id" id="modifyId" >
+                            <input type="hidden" name="email" class="modifyEmail" >
+                            <div class="row">
+                                <div class="col-3 userImg"></div>
+                                <div id="" class="form-group col">
+                                    <div class="col-5">
+                                        <label for="">用戶圖片</label>
+                                        <small>(再上傳一次會將前一張圖蓋掉)</small>
+                                        <input type="file" class="form-control" name="picture" />
+                                    </div>
+                                    <div class="col-5">
+                                        <label for="">E-Mail</label>
+                                        <input type="text" class="form-control modifyEmail" name="newEmailConfirm" >
+                                    </div>
+                                    <div class="col-5">
+                                        <label for="">稱呼名稱</label>
+                                        <input type="email" name="name" class="form-control" id="modifyName">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-4 text-left">
+                            <div class="col-4 text-right">
                                 <div class="alert alert-light modifyMsg" role="alert"></div>
                             </div>
                             <div class="col-6 text-right">
