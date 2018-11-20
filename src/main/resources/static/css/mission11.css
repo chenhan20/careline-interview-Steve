@@ -1,5 +1,12 @@
+body{
+    padding-top: 100px
+}
 .fas{
     font-size: 24px;
+}
+#userName{
+    font-weight: 800;
+    font-size: 18px;
 }
 .cursor{
     cursor: pointer;

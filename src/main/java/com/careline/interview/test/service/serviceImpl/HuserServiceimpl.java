@@ -62,8 +62,12 @@ public class HuserServiceimpl implements HuserService {
 	public Map<String, Object> queryUser(HUser huser) {
 		StringBuffer sql = new StringBuffer();
 		Map<Object, Object> params = new HashMap<>();
-		sql.append(" select ID,EMAIL,NAME from H_USER WHERE EMAIL='" + huser.getEmail() + "' AND PASSWORD = '"
-				+ huser.getPassword() + "'");
+		sql.append(
+				" select a.ID,a.EMAIL,a.NAME,(b.IMG_URL || b.ATTACH_NAME) IMGURL from H_USER a LEFT JOIN REF_IMAGE b ");
+		sql.append(" ON a.ID=b.USER_ID ");
+		sql.append(" AND a.EMAIL='" + huser.getEmail() + "' ");
+		sql.append(" AND a.PASSWORD = '" + huser.getPassword() + "' ");
+
 		params.put("email", huser.getEmail());
 		params.put("password", huser.getPassword());
 		List<Map<String, Object>> userData = db.queryForList(sql.toString());
@@ -79,7 +83,10 @@ public class HuserServiceimpl implements HuserService {
 	public Map<String, Object> queryUser(String email) {
 		StringBuffer sql = new StringBuffer();
 		Map<Object, Object> params = new HashMap<>();
-		sql.append(" select EMAIL,NAME from H_USER WHERE EMAIL='" + email + "'");
+		sql.append(" select a.ID,a.EMAIL,a.NAME,(b.IMG_URL || b.ATTACH_NAME) IMGURL ");
+		sql.append(" from H_USER a LEFT JOIN REF_IMAGE b ");
+		sql.append(" ON a.ID=b.USER_ID ");
+		sql.append(" AND a.EMAIL='" + email + "'");
 		Map<String, Object> userData = db.queryForMap(sql.toString());
 		// 若查無資料回傳null 但感覺應會有更好的做法
 		return userData;
@@ -125,6 +132,7 @@ public class HuserServiceimpl implements HuserService {
 			}
 			String RealFilePath = path + huser.getPicture().getOriginalFilename();
 			huser.getPicture().transferTo(new File(RealFilePath));
+			deleteImg(huser.getId());
 			uploadImg(huser, url);
 		}
 	}
@@ -152,11 +160,21 @@ public class HuserServiceimpl implements HuserService {
 
 	}
 
+	private void deleteImg(String userId) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" DELETE　REF_IMAGE　");
+		sql.append(" WHERE USER_ID = '" + userId + "'");
+		db.update(sql.toString());
+
+	}
+
 	@Override
 	public Map<String, Object> getPicture(HUser huser) {
 		StringBuffer sql = new StringBuffer();
 		Map<Object, Object> params = new HashMap<>();
-		sql.append(" select * from REF_IMAGE WHERE USER_ID='" + huser.getId() + "'");
+		sql.append(" select a.*,(a.IMG_URL || a.ATTACH_NAME)  IMGURL from REF_IMAGE a ");
+		sql.append(" WHERE a.USER_ID='" + huser.getId() + "'");
 		List<Map<String, Object>> ImageData = db.queryForList(sql.toString());
 		// 若查無資料回傳null 但感覺應會有更好的做法
 		if (ImageData.size() == 1) {

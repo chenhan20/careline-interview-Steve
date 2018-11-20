@@ -64,13 +64,10 @@ public class Mission7Controller {
 			model.setId((String) userData.get("ID"));
 			Map<String, Object> imgMap = huserSerivce.getPicture(model);
 			String imageUrl = null;
-			String imageName = null;
-			System.out.println(imgMap);
 			if (imgMap != null) {
-				imageUrl = (String) imgMap.get("IMG_URL");
-				imageName = (String) imgMap.get("ATTACH_NAME");
+				imageUrl = (String) imgMap.get("IMGURL");
 			}
-			map.put("imageUrl", imageUrl + imageName);
+			map.put("imageUrl", imageUrl);
 			map.put("success", true);
 
 		} else {

@@ -20,5 +20,6 @@ INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPE
 INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M07_2','getPicture','/mission7/getPicture', 'getPicture','Y','取得圖片');
 INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M08_1','saveInterest','/mission8/saveInterest', 'saveInterest','Y','儲存興趣');
 INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M08_2','getInterest','/mission8/getInterest', 'getInterest','Y','取得興趣');
-INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M10_1','call','/mission10/call', 'call','Y','計算API次數測試');
+INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M11_1','call','/mission11/getMembers', 'getMembers','Y','根據信箱查詢完整會員資訊');
+INSERT INTO `API_FUNCTION` (`API_CODE`,`API_NAME`,`API_URL`,`API_CLASS`,`USE_OPEN`,`API_DEPT`) VALUES ('M11_2','call','/mission11/getSession', 'getSession','Y','取得session會員資料');
 

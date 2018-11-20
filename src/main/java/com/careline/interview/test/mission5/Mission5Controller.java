@@ -27,21 +27,16 @@ public class Mission5Controller {
 	public Map<String, Object> login(HttpServletRequest request, HUser model) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
-		if (!commonUtil.chkLogin(userData)) {
-			// 確認帳密資訊
-			userData = huserSerivce.queryUser(model);
-			if (userData != null) {
-				map.put("successMsg", "登入成功" + userData.get("NAME"));
-				map.put("userMap", userData);
-				request.getSession().setAttribute("LoginUser", userData);
-			} else {
-				map.put("errorMsg", "EMAIL或密碼錯誤!");
-			}
+		// 確認帳密資訊
+		userData = huserSerivce.queryUser(model);
+		if (userData != null) {
+			map.put("successMsg", "登入成功" + userData.get("NAME"));
+			map.put("userMap", userData);
+			request.getSession().setAttribute("LoginUser", userData);
 		} else {
-			map.put("errorMsg", "你已經登入了");
+			map.put("errorMsg", "EMAIL或密碼錯誤!");
 		}
 		return map;
-
 	}
 
 	@RequestMapping("/mission5/logout")

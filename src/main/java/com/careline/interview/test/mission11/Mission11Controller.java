@@ -2,6 +2,7 @@ package com.careline.interview.test.mission11;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 import com.careline.interview.test.service.CommonService;
 import com.careline.interview.test.service.HuserService;
@@ -25,6 +26,15 @@ public class Mission11Controller {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> user = huserSerivce.queryUser(email);
         map.put("member", user);
+        return map;
+    }
+
+    @RequestMapping("/mission11/getSession")
+    @ResponseBody
+    public Map<String, Object> getSession(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
+        map.put("userData", userData);
         return map;
     }
 

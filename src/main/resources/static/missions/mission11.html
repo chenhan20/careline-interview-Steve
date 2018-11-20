@@ -16,129 +16,122 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="card">
-                <div class="card-header">
-                    任務11 - 會員管理介面
+            <div class="row">
+                <div class="list-group col-3">
+                    <li class="list-group-item disabled" id="userTitle">
+                        <span class="fas fa-address-card col-3"></span>
+                        <span class="col" id="userName">尚未登入</span>
+                    </li>
+                    <a href="#" class="list-group-item list-group-item-action active" id="login">
+                        <span class="fas fa-sign-in-alt col-3"></span>
+                        管理者登入
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" id="query">
+                        <span class="fas fa-search col-3"></span>
+                        查詢會員
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" id="add">
+                        <span class="fas fa-plus-circle col-3"></span>
+                        新增會員
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" id="modify">
+                        <span class="fas fa-wrench col-3"></span>
+                        設定會員資料
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <span class="fas fa-user-circle col-3"></span>
+                        個人資料
+                    </a>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">請設計一個【會員管理介面】(包含頁面UI和Server API), 包含以下功能</p>
-                    <p class="card-text"> - 查詢現有會員資料 (清單顯示, 單筆顯示)</p>
-                    <p class="card-text"> - 新增會員資料</p>
-                    <p class="card-text"> - 修改會員資料(Email, 名稱, 密碼, 照片)</p>
-                    <p class="card-text"> - 強制登出會員</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    任務11 - 會員管理介面
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="list-group col-2"">
-                            <li class="list-group-item disabled" id="userTitle">
-                                <i class="fas fa-address-card"></i>
-                                <a id="userName">尚未登入</a>
-                            </li>
-                            <a href="#" class="list-group-item list-group-item-action active" id="login">
-                                <i class="fas fa-sign-in-alt"></i>管理者登入
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action" id="query">
-                                <i class="fas fa-search"></i>查詢會員
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action" id="add"><i class="fas fa-plus-circle"></i>新增會員</a>
-                            <a href="#" class="list-group-item list-group-item-action" id="modify"><i class="fas fa-wrench"></i>設定會員資料</a>
-                            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-user-circle"></i>個人資料</a>
-                        </div>
-                        <div class="col rightbox">
-                            <div class="init login offset-3 col-9">
-                                <h3 class=>Login</h3>
-                                <form id="loginForm">
-                                    <div id="" class="form-group">
-                                        <div class="col-4">
-                                            <label for="">E-Mail</label>
-                                            <input type="text" class="form-control" name="email" placeholder="Enter email">
-                                        </div>
-                                        <div class="col-4">
-                                            <label for="">Password</label>
-                                            <input type="password" class="form-control" name="password" placeholder="Enter password.." >
-                                        </div>
-                                        <div class="text-left">
-                                            <div class="alert alert-light loginMsg" role="alert"></div>
-                                        </div>
-                                        <div class="offset-3">
-                                            <button id="btn_login" type="button" name="password" class="btn btn-primary btn-lg">登入</button>
-                                        </div>
-                                    </div>
-                                </form>
+                <div class="col rightbox">
+                    <div class="init login offset-2">
+                        <h3 class=>Login</h3>
+                        <form id="loginForm">
+                            <div id="" class="form-group">
+                                <div class="col-4">
+                                    <label for="">E-Mail</label>
+                                    <input type="text" class="form-control" name="email" placeholder="Enter email">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Enter password.." >
+                                </div>
+                                <div class="text-left">
+                                    <div class="alert alert-light loginMsg" role="alert"></div>
+                                </div>
+                                <div class="offset-3">
+                                    <button id="btn_login" type="button" class="btn btn-primary">登入</button>
+                                </div>
                             </div>
-                            <div class="init query col-8">
-                                <table id="querydataTable" class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>E-Mail</th>
-                                            <th>稱呼名稱</th>
-                                            <th>編輯</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <!-- <td class="text-right" colspan="3">
-                                                <button id="btn_" type="button" class="btn btn-primary">送出</button>
-                                            </td> -->
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="init add col-8">
-                                <form id="dataForm">
-                                    <table id="adddataTable" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>E-Mail</th>
-                                                <th>稱呼名稱</th>
-                                                <th>密碼</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td class="text-left" colspan="2">
-                                                    <div class="alert alert-light Msg" role="alert"></div>
-                                                </td>
-                                                <td class="text-center" colspan="1">
-                                                    <button id="btn_add" type="button" class="btn btn-primary">送出</button>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </form>
-                            </div>
-                            <div class="init modify col-8">
-                                <form id="modifydataForm">
-                                    <div id="" class="form-group">
-                                        <div class="col-4">
-                                            <label for="">E-Mail</label>
-                                            <input type="text" class="form-control" id="modifyEmail">
-                                        </div>
-                                        <div class="col-4">
-                                            <label for="">稱呼名稱</label>
-                                            <input type="text" class="form-control" id="modifyName">
-                                        </div>
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        <div class="alert alert-light modifyMsg" role="alert"></div>
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <button id="btn_modify" type="button" class="btn btn-primary">修改送出</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                   
+                    <div class="init query col-8">
+                        <table id="querydataTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>E-Mail</th>
+                                    <th>稱呼名稱</th>
+                                    <th>編輯</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <!-- <td class="text-right" colspan="3">
+                                        <button id="btn_" type="button" class="btn btn-primary">送出</button>
+                                    </td> -->
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="init add col-8">
+                        <form id="registerDataForm">
+                            <table id="adddataTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>E-Mail</th>
+                                        <th>稱呼名稱</th>
+                                        <th>密碼</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td class="text-left" colspan="2">
+                                            <div class="alert alert-light Msg" role="alert"></div>
+                                        </td>
+                                        <td class="text-center" colspan="1">
+                                            <button id="btn_add" type="button" class="btn btn-primary">送出</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="init modify col-12">
+                        <form id="modifyDataForm">
+                            <div id="" class="form-group">
+                                <div class="col-4 userImg">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">E-Mail</label>
+                                    <input type="text" class="form-control" id="modifyEmail">
+                                </div>
+                                <div class="col-4">
+                                    <label for="">稱呼名稱</label>
+                                    <input type="text" class="form-control" id="modifyName">
+                                </div>
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="alert alert-light modifyMsg" role="alert"></div>
+                            </div>
+                            <div class="col-4 text-right">
+                                <button id="btn_modify" type="button" class="btn btn-primary">修改送出</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

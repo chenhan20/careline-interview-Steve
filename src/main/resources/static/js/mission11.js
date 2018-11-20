@@ -1,8 +1,8 @@
-let modifyEmail;
-let loginUser;
+let modifyEmail;//編輯時需要的對應email
+let loginUser; //登入使用者資料
 $(function(){
     $('.init').hide();
-    $('.query').show();
+    getSession();//抓取session資訊
     $('.list-group-item').click(function(){
         $(".list-group-item").removeClass("active");
         $(this).addClass("active");
@@ -23,11 +23,31 @@ $(function(){
     call('login'); //預設進入login
 });
 
+// RESTful方法不知道如何像是jsp一樣用tag取session取值 所以每次重刷頁面都要先來抓session資訊
+let getSession = () =>{
+    ajax({
+        url : "/mission11/getSession",
+        method : "POST", 
+        success : function(data) {
+            let Msg;
+            if(data.msg!=null){
+                Msg=data.msg;
+            }else{
+                loginUser = data.userData;
+                if(loginUser!=null){
+                    $('#userName').text(loginUser.NAME);
+                }
+            }
+        }
+    })
+    
+}
+
 let register = () =>{
     ajax({
         url : "/mission3/register",
         method : "POST", 
-        data : new FormData($("#dataForm")[0]), 
+        data : new FormData($("#registerDataForm")[0]), 
         processData: false,
         contentType: false, 
         success : function(data) {
@@ -54,6 +74,7 @@ let login = () =>{
             let Msg;
             if(data.errorMsg!=null){
                 Msg=data.errorMsg;
+                getSession();
             }else{
                 loginUser = data.userMap;
                 $('#userName').text(loginUser.NAME);
@@ -65,9 +86,13 @@ let login = () =>{
     });
 };
 
+/**
+ * 基本上用這邊控制點選流程  若有超出權限的功能 會直接導回登入頁(目前只有卡登入)
+ * @param {*} method 
+ */
 let call = (method) =>{
     $('.init').hide();
-    $('.'+method).show();
+    $('.'+method).fadeIn(600);
     switch (method){
         case 'login' :
             break;
@@ -121,6 +146,7 @@ let addUser = () =>{
     
 };
 let queryUser = () =>{
+    debugger;
     if(loginUser!=null){
         ajax({
             url : "/mission4/getAllMembers",
@@ -152,8 +178,14 @@ let renderQueryTable = (memberList) => {
     }
 }
 let renderModifyData = (member) =>{
-    $('#modifydataForm :input').val('');
+    debugger;
+    $('#modifyDataForm :input').val('');
     modifyEmail=null;
     $('#modifyEmail').val(member.EMAIL);
     $('#modifyName').val(member.NAME);
+    if ($.trim(member.IMGURL) === "") {
+        $(".userImg").empty().text("尚未上傳照片");
+    } else {
+        $(".userImg").empty().append("<img src='"+member.IMGURL+"' style='max-width:200px; max-height:200px;' />");
+    }
 }
