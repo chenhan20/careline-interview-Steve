@@ -112,14 +112,19 @@
                     </div>
                     <div class="init modify col-12">
                         <form id="modifyDataForm">
-                            <div id="" class="form-group">
-                                <div class="col-4 userImg">
+                            <div id="" class="form-group offset-2">
+                                <div class="col-5">
+                                    <label for="">用戶圖片</label>
+                                    <small>(再上傳一次會將前一張圖蓋掉)</small>
+                                    <input type="file" class="form-control" name="picture" />
                                 </div>
-                                <div class="col-4">
+                                <div class="col-5 userImg">
+                                </div>
+                                <div class="col-5">
                                     <label for="">E-Mail</label>
                                     <input type="text" class="form-control" id="modifyEmail">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-5">
                                     <label for="">稱呼名稱</label>
                                     <input type="text" class="form-control" id="modifyName">
                                 </div>
@@ -127,7 +132,7 @@
                             <div class="col-4 text-left">
                                 <div class="alert alert-light modifyMsg" role="alert"></div>
                             </div>
-                            <div class="col-4 text-right">
+                            <div class="col-6 text-right">
                                 <button id="btn_modify" type="button" class="btn btn-primary">修改送出</button>
                             </div>
                         </form>
