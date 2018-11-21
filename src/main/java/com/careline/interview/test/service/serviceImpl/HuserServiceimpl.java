@@ -111,8 +111,7 @@ public class HuserServiceimpl implements HuserService {
 	@Override
 	public boolean changePassword(HUser huser, String RecordType) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE H_USER set PASSWORD= '" + huser.getNewPassword() + "' where EMAIL = '" + huser.getEmail()
-				+ "'");
+		sql.append(" UPDATE H_USER set PASSWORD= '" + huser.getNewPassword() + "' where ID = '" + huser.getId() + "'");
 		sql.append(" AND PASSWORD = '" + huser.getOldPassword() + "'");
 		int updateNum = db.update(sql.toString());
 		if (updateNum > 0) {
