@@ -1,8 +1,13 @@
 package com.careline.interview.test.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
+
+import org.springframework.util.StringUtils;
 
 public class commonUtil {
 	public static String genId() {
@@ -34,4 +39,21 @@ public class commonUtil {
 			return true;
 		}
 	}
+
+	public static String getParameter(String value) {
+		String data = "";
+		if (!StringUtils.isEmpty(value)) {
+			value = value.replaceAll("<", "＜");
+			value = value.replaceAll(">", "＞");
+			value = value.replaceAll("'", "’");
+			value = value.replaceAll("eval\\((.*)\\)", "");
+			value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+			value = value.replaceAll("script", "");
+			value = value.replaceAll("alert", "");
+			value = value.replaceAll("%2E", "");
+			data = value.trim();
+		}
+		return data;
+	}
+
 }

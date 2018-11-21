@@ -1,5 +1,7 @@
 package com.careline.interview.test.model;
 
+import com.careline.interview.test.util.commonUtil;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +45,7 @@ public class HUser {
 	}
 
 	public String getEmail() {
-		return email;
+		return commonUtil.getParameter(email);
 	}
 
 	public void setEmail(String email) {
@@ -51,7 +53,7 @@ public class HUser {
 	}
 
 	public String getPassword() {
-		return password;
+		return commonUtil.getParameter(password);
 	}
 
 	public void setPassword(String password) {
@@ -59,7 +61,7 @@ public class HUser {
 	}
 
 	public String getName() {
-		return name;
+		return commonUtil.getParameter(name);
 	}
 
 	public void setName(String name) {
@@ -67,7 +69,7 @@ public class HUser {
 	}
 
 	public String getOldPassword() {
-		return oldPassword;
+		return commonUtil.getParameter(oldPassword);
 	}
 
 	public void setOldPassword(String oldPassword) {
@@ -75,7 +77,7 @@ public class HUser {
 	}
 
 	public String getNewPassword() {
-		return newPassword;
+		return commonUtil.getParameter(newPassword);
 	}
 
 	public void setNewPassword(String newPassword) {
@@ -83,7 +85,7 @@ public class HUser {
 	}
 
 	public String getNewPasswordConfirm() {
-		return newPasswordConfirm;
+		return commonUtil.getParameter(newPasswordConfirm);
 	}
 
 	public void setNewPasswordConfirm(String newPasswordConfirm) {
