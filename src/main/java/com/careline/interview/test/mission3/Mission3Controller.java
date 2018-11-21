@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careline.interview.test.model.HUser;
 import com.careline.interview.test.service.HuserService;
+import com.careline.interview.test.util.keyUtil;
 
 @RestController
 public class Mission3Controller {
@@ -18,6 +20,9 @@ public class Mission3Controller {
 	@Autowired
 	HuserService huserSerivce;
 
+	@Value("${steve.key}")
+	private String key;
+	
 	@RequestMapping("/mission3/register")
 	@ResponseBody
 	public Map<String, Object> register(HUser model) {
@@ -29,6 +34,14 @@ public class Mission3Controller {
 			return map;
 		}
 		if (org.h2.util.StringUtils.isNullOrEmpty(huserSerivce.chkEmail(model.getEmail()))) {
+			try {
+				String encPassword = keyUtil.encrypt(model.getPassword(),key);
+				model.setPassword(encPassword);
+			} catch (Exception e) {
+				map.put("msg", e.getMessage());
+				e.printStackTrace();
+			}
+
 			huserSerivce.InsertUser(model);
 			map.put("memberId", model.getId() + "，恭喜註冊成功囉!");
 		} else {
