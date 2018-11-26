@@ -25,7 +25,7 @@
                         processData: false,
                         contentType: false, 
                         success : function(data) {
-                            if(data.login){
+                            if(data.login ==null){
                                 $("#response").text(prettyJSON(data));
                             }else{
                                 location.href = "mission5.html"+"?v="+version;

@@ -27,29 +27,22 @@ public class Mission7Controller {
 	public Map<String, Object> uploadPicture(HttpServletRequest request, HUser model) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
-		boolean login = commonUtil.chkLogin(userData);
+		model.setId((String) userData.get("ID"));
+		String url = "/images/" + model.getId() + "/";
+		String path = request.getServletContext().getRealPath(url);
 
-		if (login) {
-			model.setId((String) userData.get("ID"));
-			String url = "/images/" + model.getId() + "/";
-			String path = request.getServletContext().getRealPath(url);
-
-			try {
-				huserSerivce.uploadImage(model, path, url);
-				map.put("url", url + model.getPicture().getOriginalFilename());
-			} catch (Exception e) {
-				model.setErrorMsg(e.getMessage());
-				e.printStackTrace();
-			}
-			if (StringUtils.isNullOrEmpty(model.getErrorMsg())) {
-				map.put("success", true);
-			} else {
-				map.put("errorMsg", model.getErrorMsg());
-			}
-		} else {
-			map.put("ErrorMsg", commonMsg.NONLOGIN_MSG);
+		try {
+			huserSerivce.uploadImage(model, path, url);
+			map.put("url", url + model.getPicture().getOriginalFilename());
+		} catch (Exception e) {
+			model.setErrorMsg(e.getMessage());
+			e.printStackTrace();
 		}
-		map.put("login", login);
+		if (StringUtils.isNullOrEmpty(model.getErrorMsg())) {
+			map.put("success", true);
+		} else {
+			map.put("errorMsg", model.getErrorMsg());
+		}
 		return map;
 	}
 
@@ -58,23 +51,14 @@ public class Mission7Controller {
 	public Map<String, Object> getPicture(HttpServletRequest request, HUser model) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
-		boolean login = commonUtil.chkLogin(userData);
-
-		if (login) {
-			model.setId((String) userData.get("ID"));
-			Map<String, Object> imgMap = huserSerivce.getPicture(model);
-			String imageUrl = null;
-			if (imgMap != null) {
-				imageUrl = (String) imgMap.get("IMGURL");
-			}
-			map.put("imageUrl", imageUrl);
-			map.put("success", true);
-
-		} else {
-			map.put("ErrorMsg", commonMsg.NONLOGIN_MSG);
+		model.setId((String) userData.get("ID"));
+		Map<String, Object> imgMap = huserSerivce.getPicture(model);
+		String imageUrl = null;
+		if (imgMap != null) {
+			imageUrl = (String) imgMap.get("IMGURL");
 		}
-		map.put("login", login);
-
+		map.put("imageUrl", imageUrl);
+		map.put("success", true);
 		return map;
 	}
 }

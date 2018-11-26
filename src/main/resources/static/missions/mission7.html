@@ -25,7 +25,7 @@
                         processData: false,
                         contentType: false, 
                         success : function(data) {
-                            if(data.login){
+                            if(data.login == null){
                                 $("#response").text(prettyJSON(data));
                             }else{
                                 location.href = "mission5.html"+"?v="+version;
@@ -39,7 +39,7 @@
                     ajax({
                         url : "/mission7/getPicture",
                         success : function(data) {
-                            if(data.login){
+                            if(data.login == null){
                                 $("#response2").text(prettyJSON(data));
                                 if (data.success === true) {
                                     if ($.trim(data.imageUrl) === "") {

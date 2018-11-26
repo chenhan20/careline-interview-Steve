@@ -48,13 +48,7 @@ public class Mission11Controller {
         Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
         String url = "/images/" + model.getId() + "/";
         String path = request.getServletContext().getRealPath(url);
-        boolean login = commonUtil.chkLogin(userData);
-        if (login) {
-            huserSerivce.updateUser(model, commonMsg.CHANGE_TYPE_UPDATE, path, url, map);
-        } else {
-            map.put("Msg", commonMsg.NONLOGIN_MSG);
-        }
-        map.put("login", login);
+        huserSerivce.updateUser(model, commonMsg.CHANGE_TYPE_UPDATE, path, url, map);
         return map;
     }
 

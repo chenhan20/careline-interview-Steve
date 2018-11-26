@@ -33,27 +33,20 @@ public class Mission8Controller {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
 		List<Map<String, Object>> interestList = null;
-		boolean login = commonUtil.chkLogin(userData);
-		map.put("login", login);
-		if (login) {
-			try {
-				List<Map<String, Object>> myObjects = mapper.readValue(json,
-						new TypeReference<List<Map<String, Object>>>() {
-						});
-				huserSerivce.deleteInterests((String) userData.get("ID"));// 放這裡其實不太合理 如果再新增興趣有問題時 這個會先被commit 表示沒做到交易
-				for (Map<String, Object> valueMap : myObjects) {
-					if ((boolean) valueMap.get("isChecked")) {
-						huserSerivce.insertInterests((String) valueMap.get("key"), (String) userData.get("ID"));
-					}
+		try {
+			List<Map<String, Object>> myObjects = mapper.readValue(json,
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+			huserSerivce.deleteInterests((String) userData.get("ID"));// 放這裡其實不太合理 如果再新增興趣有問題時 這個會先被commit 表示沒做到交易
+			for (Map<String, Object> valueMap : myObjects) {
+				if ((boolean) valueMap.get("isChecked")) {
+					huserSerivce.insertInterests((String) valueMap.get("key"), (String) userData.get("ID"));
 				}
-				interestList = huserSerivce.queryUserInterests((String) userData.get("ID"));
-				map.put("interestList", interestList);
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-
-		} else {
-			// do nothing
+			interestList = huserSerivce.queryUserInterests((String) userData.get("ID"));
+			map.put("interestList", interestList);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return map;
 	}
@@ -65,15 +58,8 @@ public class Mission8Controller {
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
 		List<Map<String, Object>> interestList = null;
 
-		boolean login = commonUtil.chkLogin(userData);
-
-		map.put("login", login);
-		if (login) {
-			interestList = huserSerivce.queryUserInterests((String) userData.get("ID"));
-			map.put("interestList", interestList);
-		} else {
-
-		}
+		interestList = huserSerivce.queryUserInterests((String) userData.get("ID"));
+		map.put("interestList", interestList);
 		map.put("success", true);
 		return map;
 	}

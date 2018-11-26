@@ -22,7 +22,7 @@ import com.careline.interview.test.util.keyUtil;
 public class Mission6Controller {
 	@Autowired
 	HuserService huserSerivce;
-	
+
 	@Value("${steve.key}")
 	private String key;
 
@@ -31,18 +31,12 @@ public class Mission6Controller {
 	public Map<String, Object> updateProfile(HttpServletRequest request, HUser model) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
-		boolean login = commonUtil.chkLogin(userData);
-		if (login) {
-			model.setId((String) userData.get("ID"));
-			if (huserSerivce.changeProfile(model, commonMsg.CHANGE_TYPE_NAME)) {
-				map.put("success", "變更成功");
-			} else {
-				map.put("ErrorMsg", "變更失敗");
-			}
+		model.setId((String) userData.get("ID"));
+		if (huserSerivce.changeProfile(model, commonMsg.CHANGE_TYPE_NAME)) {
+			map.put("success", "變更成功");
 		} else {
-			map.put("ErrorMsg", commonMsg.NONLOGIN_MSG);
+			map.put("ErrorMsg", "變更失敗");
 		}
-		map.put("login", login);
 		return map;
 	}
 
@@ -51,27 +45,20 @@ public class Mission6Controller {
 	public Map<String, Object> updatePassword(HttpServletRequest request, HUser model) {
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> userData = (Map<String, Object>) request.getSession().getAttribute("LoginUser");
-		boolean login = commonUtil.chkLogin(userData);
-		map.put("login", login);
-		if (login) {
-			model.setId((String) userData.get("ID"));
-			try {
-				String encOldPassword = keyUtil.encrypt(model.getOldPassword(),key);
-				String encNewPassword = keyUtil.encrypt(model.getNewPassword(),key);
-				model.setOldPassword(encOldPassword);
-				model.setNewPassword(encNewPassword);
-			} catch (Exception e) {
-				map.put("errorMsg", e.getMessage());
-				e.printStackTrace();
-			}
-			if (huserSerivce.changePassword(model, commonMsg.CHANGE_TYPE_PASSWORD)) {
-				map.put("success", "變更成功");
-			} else {
-				map.put("errorMsg", "變更失敗，舊密碼錯誤");
-			}
-			;
+		model.setId((String) userData.get("ID"));
+		try {
+			String encOldPassword = keyUtil.encrypt(model.getOldPassword(), key);
+			String encNewPassword = keyUtil.encrypt(model.getNewPassword(), key);
+			model.setOldPassword(encOldPassword);
+			model.setNewPassword(encNewPassword);
+		} catch (Exception e) {
+			map.put("errorMsg", e.getMessage());
+			e.printStackTrace();
+		}
+		if (huserSerivce.changePassword(model, commonMsg.CHANGE_TYPE_PASSWORD)) {
+			map.put("success", "變更成功");
 		} else {
-			map.put("errorMsg", commonMsg.NONLOGIN_MSG);
+			map.put("errorMsg", "變更失敗，舊密碼錯誤");
 		}
 		return map;
 	}

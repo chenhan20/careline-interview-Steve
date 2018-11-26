@@ -85,7 +85,7 @@
                     ajax({
                         url : "/mission8/getInterest", 
                         success : function(data) {
-                            if(data.login){
+                            if(data.login == null){
                                 $("#response").text(prettyJSON(data));
                                 
                                 if (data.success === true) {
