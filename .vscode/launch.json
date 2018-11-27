@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Steve Server",
+            "url": "http://localhost:8888",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "type": "java",
             "name": "CodeLens (Launch) - keyUtil",
             "request": "launch",

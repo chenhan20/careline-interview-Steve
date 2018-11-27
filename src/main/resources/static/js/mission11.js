@@ -152,6 +152,7 @@ let modifyUser = (email) =>{
         });
     }else{
         $('#query').click();
+        return;
     }
     renderModifyData(member);
 };
